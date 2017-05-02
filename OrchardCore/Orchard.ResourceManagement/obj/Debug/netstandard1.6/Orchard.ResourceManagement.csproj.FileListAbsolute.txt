@@ -1,0 +1,9 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\bin\Debug\netstandard1.6\Orchard.ResourceManagement.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\bin\Debug\netstandard1.6\Orchard.ResourceManagement.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\bin\Debug\netstandard1.6\Orchard.ResourceManagement.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\bin\Debug\netstandard1.6\Orchard.ResourceManagement.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\bin\Debug\netstandard1.6\Orchard.ResourceManagement.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\obj\Debug\netstandard1.6\Orchard.ResourceManagement.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\obj\Debug\netstandard1.6\Orchard.ResourceManagement.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\obj\Debug\netstandard1.6\Orchard.ResourceManagement.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.ResourceManagement\obj\Debug\netstandard1.6\Orchard.ResourceManagement.pdb

@@ -1,0 +1,11 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Orchard.Feeds.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Orchard.Feeds.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Orchard.Feeds.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\obj\Debug\netstandard1.6\Orchard.Feeds.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\obj\Debug\netstandard1.6\Orchard.Feeds.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\obj\Debug\netstandard1.6\Orchard.Feeds.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Feeds.Abstractions\obj\Debug\netstandard1.6\Orchard.Feeds.Abstractions.pdb

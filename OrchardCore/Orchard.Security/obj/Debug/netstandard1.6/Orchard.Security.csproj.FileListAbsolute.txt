@@ -1,0 +1,13 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Orchard.Security.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Orchard.Security.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Orchard.Security.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Orchard.Security.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Orchard.Security.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\obj\Debug\netstandard1.6\Orchard.Security.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\obj\Debug\netstandard1.6\Orchard.Security.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\obj\Debug\netstandard1.6\Orchard.Security.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Security\obj\Debug\netstandard1.6\Orchard.Security.pdb

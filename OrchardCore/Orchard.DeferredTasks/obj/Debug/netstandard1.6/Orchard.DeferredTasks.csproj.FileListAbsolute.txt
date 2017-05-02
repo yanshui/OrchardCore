@@ -1,0 +1,15 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.DeferredTasks.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.DeferredTasks.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.DeferredTasks.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.DeferredTasks.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.DeferredTasks.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\bin\Debug\netstandard1.6\Orchard.Events.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\obj\Debug\netstandard1.6\Orchard.DeferredTasks.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\obj\Debug\netstandard1.6\Orchard.DeferredTasks.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\obj\Debug\netstandard1.6\Orchard.DeferredTasks.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.DeferredTasks\obj\Debug\netstandard1.6\Orchard.DeferredTasks.pdb

@@ -1,0 +1,7 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\bin\Debug\netstandard1.6\Orchard.Tokens.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\bin\Debug\netstandard1.6\Orchard.Tokens.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\bin\Debug\netstandard1.6\Orchard.Tokens.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\obj\Debug\netstandard1.6\Orchard.Tokens.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\obj\Debug\netstandard1.6\Orchard.Tokens.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\obj\Debug\netstandard1.6\Orchard.Tokens.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Tokens.Abstractions\obj\Debug\netstandard1.6\Orchard.Tokens.Abstractions.pdb

@@ -1,0 +1,11 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Orchard.HomeRoute.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Orchard.HomeRoute.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Orchard.HomeRoute.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\obj\Debug\netstandard1.6\Orchard.HomeRoute.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\obj\Debug\netstandard1.6\Orchard.HomeRoute.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\obj\Debug\netstandard1.6\Orchard.HomeRoute.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.HomeRoute\obj\Debug\netstandard1.6\Orchard.HomeRoute.pdb

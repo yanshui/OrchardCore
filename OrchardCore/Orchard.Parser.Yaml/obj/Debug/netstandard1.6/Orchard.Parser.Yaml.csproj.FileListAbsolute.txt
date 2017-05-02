@@ -1,0 +1,7 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\bin\Debug\netstandard1.6\Orchard.Parser.Yaml.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\bin\Debug\netstandard1.6\Orchard.Parser.Yaml.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\bin\Debug\netstandard1.6\Orchard.Parser.Yaml.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\obj\Debug\netstandard1.6\Orchard.Parser.Yaml.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\obj\Debug\netstandard1.6\Orchard.Parser.Yaml.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\obj\Debug\netstandard1.6\Orchard.Parser.Yaml.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Parser.Yaml\obj\Debug\netstandard1.6\Orchard.Parser.Yaml.pdb

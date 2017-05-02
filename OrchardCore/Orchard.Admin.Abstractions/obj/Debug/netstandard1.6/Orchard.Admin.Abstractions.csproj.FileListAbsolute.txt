@@ -1,0 +1,11 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Admin.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Admin.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Admin.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Security.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\bin\Debug\netstandard1.6\Orchard.Security.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\obj\Debug\netstandard1.6\Orchard.Admin.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\obj\Debug\netstandard1.6\Orchard.Admin.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\obj\Debug\netstandard1.6\Orchard.Admin.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Admin.Abstractions\obj\Debug\netstandard1.6\Orchard.Admin.Abstractions.pdb

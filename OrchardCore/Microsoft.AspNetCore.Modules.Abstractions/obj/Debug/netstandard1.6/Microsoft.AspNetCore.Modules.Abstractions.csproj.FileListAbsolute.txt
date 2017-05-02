@@ -1,0 +1,7 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\obj\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\obj\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\obj\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\obj\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb

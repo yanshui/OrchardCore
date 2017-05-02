@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/OrchardCore/Microsoft.AspNetCore.Modules/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Body/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.ContentFields/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.ContentPreview/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.ContentTypes/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Markdown/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Menu/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Navigation/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.DynamicCache/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.OpenId/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Resources/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Roles/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Scripting/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/OrchardCore.Modules/Orchard.Setup/README/</loc>
+     <lastmod>2017-05-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+</urlset>

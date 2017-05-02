@@ -1,0 +1,15 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Commands.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Commands.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Commands.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\bin\Debug\netstandard1.6\Orchard.Events.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\obj\Debug\netstandard1.6\Orchard.Environment.Commands.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\obj\Debug\netstandard1.6\Orchard.Environment.Commands.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\obj\Debug\netstandard1.6\Orchard.Environment.Commands.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Commands\obj\Debug\netstandard1.6\Orchard.Environment.Commands.pdb

@@ -1,0 +1,17 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.BackgroundTasks.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.BackgroundTasks.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.BackgroundTasks.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.BackgroundTasks.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.BackgroundTasks.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\bin\Debug\netstandard1.6\Orchard.Events.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\obj\Debug\netstandard1.6\Orchard.BackgroundTasks.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\obj\Debug\netstandard1.6\Orchard.BackgroundTasks.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\obj\Debug\netstandard1.6\Orchard.BackgroundTasks.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.BackgroundTasks\obj\Debug\netstandard1.6\Orchard.BackgroundTasks.pdb

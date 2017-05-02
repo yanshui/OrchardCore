@@ -1,0 +1,11 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Events.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\obj\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\obj\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\obj\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Environment.Shell.Abstractions\obj\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.pdb

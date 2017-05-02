@@ -1,0 +1,549 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Orchard Core\nLink\n\n\nOrchard Core is a re-implementation of \nOrchard CMS\n in \nASP.NET Core\n. You can check out the \nOrchard Core presentation from the last Orchard Harvest\n to get an introductory overview of its features and goals.\n\n\n\n\n\n\nBuild Status\nLink\n\n\n\n\n\n\n\n\nBuild server\n\n\nPlatform\n\n\nStatus\n\n\n\n\n\n\n\n\n\n\nAppVeyor\n\n\nWindows\n\n\n\n\n\n\n\n\nTravis\n\n\nLinux / OS X\n\n\n\n\n\n\n\n\nMyGet\n\n\nWindows\n\n\n\n\n\n\n\n\n\n\nOrchard CMS\nLink\n\n\nOrchard is a free, \nopen source\n, community-focused Content Management System built on the ASP.NET MVC platform.\n\n\nStatus\nLink\n\n\nAlpha\nLink\n\n\nThe software is complete enough for internal testing. This is typically done by people other than the software engineers who wrote it, but still within the same organization or community that developed the software.\n\n\nHere is a more detailed \nroadmap\n.\n\n\nGetting Started\nLink\n\n\n\n\nClone the repository using the command \ngit clone https://github.com/OrchardCMS/Orchard2.git\n and checkout the \nmaster\n branch. \n\n\n\n\nCommand line\nLink\n\n\n\n\nInstall the latest versions (current) for both Runtime and SDK of .NET Core from this page \nhttps://www.microsoft.com/net/download/core\n\n\nCall \ndotnet restore\n.\n\n\nCall \ndotnet build\n.\n\n\nNext navigate to \nD:\\Orchard2\\src\\Orchard.Cms.Web\n or wherever your respective folder is on the command line in Administrator mode.\n\n\nCall \ndotnet run\n.\n\n\nThen open the \nhttp://localhost:5000\n URL in your browser.\n\n\n\n\nVisual Studio 2017\nLink\n\n\n\n\nDownload Visual Studio 2017 (any edition) from \nhttps://www.visualstudio.com/downloads/\n\n\nOpen \nOrchard.sln\n\n\nEnsure \nOrchardCore.Cms\n is the startup project and run it\n\n\n\n\nContributing\nLink\n\n\nWe currently follow the these \nengineering guidelines\n.",
+            "title": "About Orchard Core"
+        },
+        {
+            "location": "/#orchard-core",
+            "text": "Orchard Core is a re-implementation of  Orchard CMS  in  ASP.NET Core . You can check out the  Orchard Core presentation from the last Orchard Harvest  to get an introductory overview of its features and goals.",
+            "title": "Orchard Core"
+        },
+        {
+            "location": "/#build-status",
+            "text": "Build server  Platform  Status      AppVeyor  Windows     Travis  Linux / OS X     MyGet  Windows",
+            "title": "Build Status"
+        },
+        {
+            "location": "/#orchard-cms",
+            "text": "Orchard is a free,  open source , community-focused Content Management System built on the ASP.NET MVC platform.",
+            "title": "Orchard CMS"
+        },
+        {
+            "location": "/#status",
+            "text": "",
+            "title": "Status"
+        },
+        {
+            "location": "/#alpha",
+            "text": "The software is complete enough for internal testing. This is typically done by people other than the software engineers who wrote it, but still within the same organization or community that developed the software.  Here is a more detailed  roadmap .",
+            "title": "Alpha"
+        },
+        {
+            "location": "/#getting-started",
+            "text": "Clone the repository using the command  git clone https://github.com/OrchardCMS/Orchard2.git  and checkout the  master  branch.",
+            "title": "Getting Started"
+        },
+        {
+            "location": "/#command-line",
+            "text": "Install the latest versions (current) for both Runtime and SDK of .NET Core from this page  https://www.microsoft.com/net/download/core  Call  dotnet restore .  Call  dotnet build .  Next navigate to  D:\\Orchard2\\src\\Orchard.Cms.Web  or wherever your respective folder is on the command line in Administrator mode.  Call  dotnet run .  Then open the  http://localhost:5000  URL in your browser.",
+            "title": "Command line"
+        },
+        {
+            "location": "/#visual-studio-2017",
+            "text": "Download Visual Studio 2017 (any edition) from  https://www.visualstudio.com/downloads/  Open  Orchard.sln  Ensure  OrchardCore.Cms  is the startup project and run it",
+            "title": "Visual Studio 2017"
+        },
+        {
+            "location": "/#contributing",
+            "text": "We currently follow the these  engineering guidelines .",
+            "title": "Contributing"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/",
+            "text": "Introduction\nLink\n\n\nThe library ASP.Net Core Modules provides a mechanism to have a self contained modular system where you can opt in to a specific application framework and not have the design of you application be dictated to by such.\n\n\nGetting started\nLink\n\n\nFirst, create a brand new web application.\n\n\nWithin this new application we are initially going to focus on two files, \nproject.json\n and \nStartup.cs\n. If you don't have either of these... start again!\n\n\nOkay so first, let's open up \nproject.json\n.\n\n\nWithin the ConfigureServices method add these lines:\n\n\nservices\n.\nAddModuleServices\n(\nconfigure\n \n=>\n \nconfigure\n\n    \n.\nAddConfiguration\n(\nConfiguration\n)\n\n\n);\n\n\n\n\n\n\nNext, at the end of the Configure method, add these lines:\n\n\napp\n.\nUseModules\n();\n\n\n\n\n\n\nThat's it. Erm, wait, what? Okay so right now you must be thinking, well what the hell does this do? Good question.\n\n\nAddModuleServices will add the container middleware to you application pipeline, this means in short that It will look in to a folder called Modules within you application for all folders that contain the mainfest file \nModule.txt\n. IF you looked on the file system it would look like this:\n\n\nMyNewWebApplicaion\n  \\ Modules\n    \\ Module1\n    \\ Module2\n\n\n\n\n\nOnce it has found that manifest file, and said file is valid, it will then look for all classes that inherit off of \nStartupBase\n, instansiate them and then call the methods on here. An example of one is:\n\n\npublic\n \nclass\n \nStartup\n \n:\n \nStartupBase\n\n\n{\n\n    \npublic\n \noverride\n \nvoid\n \nConfigureServices\n(\nIServiceCollection\n \nservices\n)\n\n    \n{\n\n        \nservices\n.\nAddScoped\n<\nISomeInterface\n,\n \nSomeImplementedClass\n>();\n\n    \n}\n\n\n}\n\n\n\n\n\n\nBy doing this you allow your modules to be self contained, completely decoupled from the Hosting applicaiton.\n\n\n\n\nNote: If you drop a new module in, then you will need to restart the application for it to be found.\n\n\n\n\nAdd Extra Locations\nLink\n\n\nBy default module discovery is linked to the \nModules\n folder. This however can be extended.\n\n\nWithin the \nStartup.cs\n file in your host, within the \nConfigureServices\n method, add:\n\n\nservices\n.\nAddExtensionLocation\n(\n\"SomeOtherFolderToLookIn\"\n);\n\n\n\n\n\n\nAdd Extra Manifest filenames\nLink\n\n\nBy default the module manifest file is \nModule.txt\n. This however can be extended.\n\n\nWithin the \nStartup.cs\n file in your host, within the \nConfigureServices\n method, add:\n\n\nservices\n.\nAddManifestDefinition\n(\n\"ManifestMe.txt\"\n,\n \n\"module\"\n);\n\n\n\n\n\n\nAdditional framework\nLink\n\n\nYou can add your favourite application framework to the pipeline, easily. The below implementations are designed to work side by side, so if you want Asp.Net Mvc and Nancy within your pipeline, just add both.\n\n\nThe modular framework wrappers below are designed to work directly with the modular application framework, so avoid just adding the raw framework and expect it to just work.\n\n\nAsp.Net Mvc\nLink\n\n\nWithin your hosting application add a reference to \nOrchard.Mvc.Core\n.\n\n\nNext, within \nStartup.cs\n modify the method \nAddModuleServices\n to look like this:\n\n\nservices\n.\nAddModuleServices\n(\nconfigure\n \n=>\n \nconfigure\n\n    \n.\nAddMvcModules\n(\nservices\n.\nBuildServiceProvider\n())\n\n    \n.\nAddConfiguration\n(\nConfiguration\n)\n\n\n);\n\n\n\n\n\n\n\n\nNote the addition of \n.AddMvcModules(services.BuildServiceProvider())\n\n\n\n\nThat's it, done. Asp.Net Mvc is now part of your pipeline.\n\n\nNancyFx\nLink\n\n\nWithin your hosting application add a reference to \nOrchard.Nancy.Core\n\n\nNext, within \nStartup.cs\n modify the method \nConfigure\n to look like this:\n\n\napp\n.\nUseModules\n(\nmodules\n \n=>\n \nmodules\n\n    \n.\nUseNancyModules\n()\n\n\n);\n\n\n\n\n\n\n\n\nNote the addition of \n.UseNancyModules()\n\n\n\n\nThat's it, done. NancyFx is now part of your pipeline. What this means is that Nancy modules will be automatically discovered.\n\n\n\n\nNote. There is no need to register a Nancy Module within its own Startup class.",
+            "title": "ASP.NET Core Modules"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#introduction",
+            "text": "The library ASP.Net Core Modules provides a mechanism to have a self contained modular system where you can opt in to a specific application framework and not have the design of you application be dictated to by such.",
+            "title": "Introduction"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#getting-started",
+            "text": "First, create a brand new web application.  Within this new application we are initially going to focus on two files,  project.json  and  Startup.cs . If you don't have either of these... start again!  Okay so first, let's open up  project.json .  Within the ConfigureServices method add these lines:  services . AddModuleServices ( configure   =>   configure \n     . AddConfiguration ( Configuration )  );   Next, at the end of the Configure method, add these lines:  app . UseModules ();   That's it. Erm, wait, what? Okay so right now you must be thinking, well what the hell does this do? Good question.  AddModuleServices will add the container middleware to you application pipeline, this means in short that It will look in to a folder called Modules within you application for all folders that contain the mainfest file  Module.txt . IF you looked on the file system it would look like this:  MyNewWebApplicaion\n  \\ Modules\n    \\ Module1\n    \\ Module2  Once it has found that manifest file, and said file is valid, it will then look for all classes that inherit off of  StartupBase , instansiate them and then call the methods on here. An example of one is:  public   class   Startup   :   StartupBase  { \n     public   override   void   ConfigureServices ( IServiceCollection   services ) \n     { \n         services . AddScoped < ISomeInterface ,   SomeImplementedClass >(); \n     }  }   By doing this you allow your modules to be self contained, completely decoupled from the Hosting applicaiton.   Note: If you drop a new module in, then you will need to restart the application for it to be found.",
+            "title": "Getting started"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#add-extra-locations",
+            "text": "By default module discovery is linked to the  Modules  folder. This however can be extended.  Within the  Startup.cs  file in your host, within the  ConfigureServices  method, add:  services . AddExtensionLocation ( \"SomeOtherFolderToLookIn\" );",
+            "title": "Add Extra Locations"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#add-extra-manifest-filenames",
+            "text": "By default the module manifest file is  Module.txt . This however can be extended.  Within the  Startup.cs  file in your host, within the  ConfigureServices  method, add:  services . AddManifestDefinition ( \"ManifestMe.txt\" ,   \"module\" );",
+            "title": "Add Extra Manifest filenames"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#additional-framework",
+            "text": "You can add your favourite application framework to the pipeline, easily. The below implementations are designed to work side by side, so if you want Asp.Net Mvc and Nancy within your pipeline, just add both.  The modular framework wrappers below are designed to work directly with the modular application framework, so avoid just adding the raw framework and expect it to just work.",
+            "title": "Additional framework"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#aspnet-mvc",
+            "text": "Within your hosting application add a reference to  Orchard.Mvc.Core .  Next, within  Startup.cs  modify the method  AddModuleServices  to look like this:  services . AddModuleServices ( configure   =>   configure \n     . AddMvcModules ( services . BuildServiceProvider ()) \n     . AddConfiguration ( Configuration )  );    Note the addition of  .AddMvcModules(services.BuildServiceProvider())   That's it, done. Asp.Net Mvc is now part of your pipeline.",
+            "title": "Asp.Net Mvc"
+        },
+        {
+            "location": "/OrchardCore/Microsoft.AspNetCore.Modules/README/#nancyfx",
+            "text": "Within your hosting application add a reference to  Orchard.Nancy.Core  Next, within  Startup.cs  modify the method  Configure  to look like this:  app . UseModules ( modules   =>   modules \n     . UseNancyModules ()  );    Note the addition of  .UseNancyModules()   That's it, done. NancyFx is now part of your pipeline. What this means is that Nancy modules will be automatically discovered.   Note. There is no need to register a Nancy Module within its own Startup class.",
+            "title": "NancyFx"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/",
+            "text": "Body (Orchard.Body)\nLink\n\n\nEditors\nLink\n\n\nThe \nBody Part\n editor can be different for each content type. In the \nBody Part\n settings of a \ncontent type, just select the one that needs to be used.\n\n\nThere are two predefined editor names:\n- \nDefault\n is the editor that is used by default\n- \nWysiwyg\n is the editor that provides a WYSIWYG experience\n\n\nCustom Editors\nLink\n\n\nCustomizing the editor can mean to replace the predefined one with different experiences, or to provide\nnew options for the user to choose from.\n\n\nTo create a new custom editor, it is required to provide two shape templates, one to provide\nthe name of the editor (optional if you want to override and existing one), and a shape to\nrender the actual HTML for the editor.\n\n\nDeclaration\nLink\n\n\nTo declare a new editor, create a shape named \nBody_Option__{Name}\n where \n{Name}\n is a value \nof your choosing. This will be represented by a file named \nBody-{Name}.Option.cshtml\n.\n\n\nSample content:\n\n\n@\n{\n\n    \nstring\n \ncurrentEditor\n \n=\n \nModel\n.\nEditor\n;\n\n\n}\n\n\n<\noption\n \nvalue\n=\n\"Wysiwyg\"\n \nselected\n=\n\"@(currentEditor == \"\nWysiwyg\n\")\"\n>\n@T\n[\n\"Wysiwyg editor\"\n]</\noption\n>\n\n\n\n\n\n\nHTML Editor\nLink\n\n\nTo define what HTML to render when the editor is selected from the settings, a shape named \n\nBody_Editor__{Name}\n corresponding to a file \nBody-{Name}.Editor.cshtml\n can be created.\n\n\nSample content:\n\n\n@using\n \nOrchard\n.\nBody\n.\nViewModels\n;\n\n\n@model\n \nBodyPartViewModel\n\n\n\n<\nfieldset\n \nclass\n=\n\"form-group\"\n>\n\n    \n<\nlabel\n \nasp\n-\nfor\n=\n\"Body\"\n>\n@T\n[\n\"Body\"\n]</\nlabel\n>\n\n    \n<\ntextarea\n \nasp\n-\nfor\n=\n\"Body\"\n \nrows\n=\n\"5\"\n \nclass\n=\n\"form-control\"\n></\ntextarea\n>\n\n    \n<\nspan\n \nclass\n=\n\"hint\"\n>\n@T\n[\n\"The body of the content item.\"\n]</\nspan\n>\n\n\n</\nfieldset\n>\n\n\n\n\n\n\nOverriding the predefined editors\nLink\n\n\nYou can override the HTML editor for the \nDefault\n editor by creating a shape file named \n\nBody.Editor.cshtml\n. The Wysiwyg editor is defined by using the file named \n\nBody-Wysiwyg.Editor.cshtml\n.\n\n\nCREDITS\nLink\n\n\nTrumbowyg\nLink\n\n\nhttps://github.com/Alex-D/Trumbowyg\n\nCopyright (c) 2012-2016 Alexandre Demode (Alex-D)\nLicense: MIT",
+            "title": "Body"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#body-orchardbody",
+            "text": "",
+            "title": "Body (Orchard.Body)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#editors",
+            "text": "The  Body Part  editor can be different for each content type. In the  Body Part  settings of a \ncontent type, just select the one that needs to be used.  There are two predefined editor names:\n-  Default  is the editor that is used by default\n-  Wysiwyg  is the editor that provides a WYSIWYG experience",
+            "title": "Editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#custom-editors",
+            "text": "Customizing the editor can mean to replace the predefined one with different experiences, or to provide\nnew options for the user to choose from.  To create a new custom editor, it is required to provide two shape templates, one to provide\nthe name of the editor (optional if you want to override and existing one), and a shape to\nrender the actual HTML for the editor.",
+            "title": "Custom Editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#declaration",
+            "text": "To declare a new editor, create a shape named  Body_Option__{Name}  where  {Name}  is a value \nof your choosing. This will be represented by a file named  Body-{Name}.Option.cshtml .  Sample content:  @ { \n     string   currentEditor   =   Model . Editor ;  }  < option   value = \"Wysiwyg\"   selected = \"@(currentEditor == \" Wysiwyg \")\" > @T [ \"Wysiwyg editor\" ]</ option >",
+            "title": "Declaration"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#html-editor",
+            "text": "To define what HTML to render when the editor is selected from the settings, a shape named  Body_Editor__{Name}  corresponding to a file  Body-{Name}.Editor.cshtml  can be created.  Sample content:  @using   Orchard . Body . ViewModels ;  @model   BodyPartViewModel  < fieldset   class = \"form-group\" > \n     < label   asp - for = \"Body\" > @T [ \"Body\" ]</ label > \n     < textarea   asp - for = \"Body\"   rows = \"5\"   class = \"form-control\" ></ textarea > \n     < span   class = \"hint\" > @T [ \"The body of the content item.\" ]</ span >  </ fieldset >",
+            "title": "HTML Editor"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#overriding-the-predefined-editors",
+            "text": "You can override the HTML editor for the  Default  editor by creating a shape file named  Body.Editor.cshtml . The Wysiwyg editor is defined by using the file named  Body-Wysiwyg.Editor.cshtml .",
+            "title": "Overriding the predefined editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#credits",
+            "text": "",
+            "title": "CREDITS"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Body/README/#trumbowyg",
+            "text": "https://github.com/Alex-D/Trumbowyg \nCopyright (c) 2012-2016 Alexandre Demode (Alex-D)\nLicense: MIT",
+            "title": "Trumbowyg"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/",
+            "text": "Content Fields (Orchard.ContentFields)\nLink\n\n\nPurpose\nLink\n\n\nThis modules provides common content fields.\n\n\nAvailable Fields\nLink\n\n\n\n\n\n\n\n\nName\n\n\nProperties\n\n\nShape Type\n\n\n\n\n\n\n\n\n\n\nTextField\n\n\nText (string)\n\n\nTextField\n\n\n\n\n\n\nBooleanField\n\n\nValue (bool)\n\n\nBooleanField\n\n\n\n\n\n\nHtmlField\n\n\nHtml (string)\n\n\nHtmlField\n\n\n\n\n\n\nNumericField\n\n\nValue (decimal?)\n\n\nNumericField\n\n\n\n\n\n\n\n\nUsage\nLink\n\n\nFrom a \nContent\n template, you can reference a field's value like this:\n\n\nvar\n \nfieldValue\n \n=\n \ncontentItem\n.\nContent\n.\nArticle\n.\nMyField\n.\nText\n;\n\n\n\n\n\n\nIf the content type is \nArticle\n and has a Text Field named \nMyField\n.\n\n\nCreating Custom Fields\nLink\n\n\nWhat to extend?\nLink\n\n\nBefore creating a new field the solution might be to provide a custom editor and formatter \ninstead.\n\n\nA field should represent some specific physical data and logical data. The same field can be customized\nto be edited and rendered differently using both Editors and Formatters. Editors are shapes that can\nbe used to edit a field differently, for instance th Wysiwyg Html editor is a custom editor for the Html\nfield. Formatters are alternate shapes that can be used to render a field on the front end, for instance\na Link field could be rendered as a Youtube video player. \n\n\nModel Class\nLink\n\n\nCreate a class inheriting from \nContentField\n that will represent the state of your field. Its content will be serialized as part of\nthe content item. Json.NET classes can be used to customize the serialization.\n\n\nExample:\n\n\npublic\n \nclass\n \nTextField\n \n:\n \nContentField\n\n\n{\n\n    \npublic\n \nstring\n \nText\n \n{\n \nget\n;\n \nset\n;\n \n}\n\n\n}\n\n\n\n\n\n\nThis class needs to be registered in the DI like this:\n\n\nservices\n.\nAddSingleton\n<\nContentField\n,\n \nTextField\n>();\n\n\n\n\n\n\nDisplay Driver\nLink\n\n\nThe display driver is the component that drives how the field is displayed on the front end, edited on\nthe admin, updated and validated.\n\n\nCreate a class inheriting from \nContentFieldDisplayDriver<TextField>\n and implement the three methods \n\nDisplay\n, \nEdit\n and \nDisplayAsync\n by looking at examples from this module.\n\n\nThis class needs to be registered in the DI like this:\n\n\nservices\n.\nAddScoped\n<\nIContentFieldDisplayDriver\n,\n \nTextFieldDisplayDriver\n>();\n\n\n\n\n\n\nCreating Custom Editors\nLink\n\n\nFor each field, the convention is to create an alternate that can target different editors. To provide\na new choice in the list of available editors for a field, create a new shape template that matches this\ntemplate: \n{FIELDTYPE}_Option__{EDITORNAME}\n\nThis shape type will match a template file named \n{FIELDTYPE}-{EDITORNAME}.Option.cshtml\n\n\nThis template will need to render an \n<option>\n tag. Here is an example for a Wysiwig options on the \nHtml Field:\n\n\n@\n{\n\n    \nstring\n \ncurrentEditor\n \n=\n \nModel\n.\nEditor\n;\n\n\n}\n\n\n<\noption\n \nvalue\n=\n\"Wysiwyg\"\n \nselected\n=\n\"@(currentEditor == \"\nWysiwyg\n\")\"\n>\n@T\n[\n\"Wysiwyg editor\"\n]</\noption\n>\n\n\n\n\n\n\nThen you can create the editor shape by adding a file named \n{FIELDTYPE}_Editor__{EDITORNAME}\n which is\nrepresented by a template file named \n{FIELDTYPE}-{EDITORNAME}Editor.cshtml\n. \n\n\nFor instance the filename for the Wysiwyg editor on the Html Field is named \nHtmlField-Wysiwyg.Editor.cshtml\n.",
+            "title": "Content Fields"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#content-fields-orchardcontentfields",
+            "text": "",
+            "title": "Content Fields (Orchard.ContentFields)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#purpose",
+            "text": "This modules provides common content fields.",
+            "title": "Purpose"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#available-fields",
+            "text": "Name  Properties  Shape Type      TextField  Text (string)  TextField    BooleanField  Value (bool)  BooleanField    HtmlField  Html (string)  HtmlField    NumericField  Value (decimal?)  NumericField",
+            "title": "Available Fields"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#usage",
+            "text": "From a  Content  template, you can reference a field's value like this:  var   fieldValue   =   contentItem . Content . Article . MyField . Text ;   If the content type is  Article  and has a Text Field named  MyField .",
+            "title": "Usage"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#creating-custom-fields",
+            "text": "",
+            "title": "Creating Custom Fields"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#what-to-extend",
+            "text": "Before creating a new field the solution might be to provide a custom editor and formatter \ninstead.  A field should represent some specific physical data and logical data. The same field can be customized\nto be edited and rendered differently using both Editors and Formatters. Editors are shapes that can\nbe used to edit a field differently, for instance th Wysiwyg Html editor is a custom editor for the Html\nfield. Formatters are alternate shapes that can be used to render a field on the front end, for instance\na Link field could be rendered as a Youtube video player.",
+            "title": "What to extend?"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#model-class",
+            "text": "Create a class inheriting from  ContentField  that will represent the state of your field. Its content will be serialized as part of\nthe content item. Json.NET classes can be used to customize the serialization.  Example:  public   class   TextField   :   ContentField  { \n     public   string   Text   {   get ;   set ;   }  }   This class needs to be registered in the DI like this:  services . AddSingleton < ContentField ,   TextField >();",
+            "title": "Model Class"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#display-driver",
+            "text": "The display driver is the component that drives how the field is displayed on the front end, edited on\nthe admin, updated and validated.  Create a class inheriting from  ContentFieldDisplayDriver<TextField>  and implement the three methods  Display ,  Edit  and  DisplayAsync  by looking at examples from this module.  This class needs to be registered in the DI like this:  services . AddScoped < IContentFieldDisplayDriver ,   TextFieldDisplayDriver >();",
+            "title": "Display Driver"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentFields/README/#creating-custom-editors",
+            "text": "For each field, the convention is to create an alternate that can target different editors. To provide\na new choice in the list of available editors for a field, create a new shape template that matches this\ntemplate:  {FIELDTYPE}_Option__{EDITORNAME} \nThis shape type will match a template file named  {FIELDTYPE}-{EDITORNAME}.Option.cshtml  This template will need to render an  <option>  tag. Here is an example for a Wysiwig options on the \nHtml Field:  @ { \n     string   currentEditor   =   Model . Editor ;  }  < option   value = \"Wysiwyg\"   selected = \"@(currentEditor == \" Wysiwyg \")\" > @T [ \"Wysiwyg editor\" ]</ option >   Then you can create the editor shape by adding a file named  {FIELDTYPE}_Editor__{EDITORNAME}  which is\nrepresented by a template file named  {FIELDTYPE}-{EDITORNAME}Editor.cshtml .   For instance the filename for the Wysiwyg editor on the Html Field is named  HtmlField-Wysiwyg.Editor.cshtml .",
+            "title": "Creating Custom Editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentPreview/README/",
+            "text": "CREDITS\nLink\n\n\njquery-resizable\nLink\n\n\nhttps://github.com/RickStrahl/jquery-resizable\n\ncopyright \u00a9 Rick Strahl, West Wind Technologies",
+            "title": "Content Preview"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentPreview/README/#credits",
+            "text": "",
+            "title": "CREDITS"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentPreview/README/#jquery-resizable",
+            "text": "https://github.com/RickStrahl/jquery-resizable \ncopyright \u00a9 Rick Strahl, West Wind Technologies",
+            "title": "jquery-resizable"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentTypes/README/",
+            "text": "\ufeff# Content Types (Orchard.ContentTypes)\n\n\nView Components\nLink\n\n\nSelectContentTypes\nLink\n\n\nRenders an editor to select a list of content types. It can optionally filter content types of a specific stereotype.\nThe editor returns the selection as a \nstring[]\n on the model.\n\n\nParameters\nLink\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nselectedContentTypes\n\n\nstring[]\n\n\nThe list of content types that should be marked as selected when rendering the editor.\n\n\n\n\n\n\nhtmlName\n\n\nstring\n\n\nThe name of the model property to bind the result to.\n\n\n\n\n\n\nstereotype\n (optional)\n\n\nstring\n\n\nA stereotype name to filter the list of content types to be able to select.\n\n\n\n\n\n\n\n\nSample\nLink\n\n\n@await\n \nComponent\n.\nInvokeAsync\n(\n\"SelectContentTypes\"\n,\n \nnew\n \n{\n \nselectedContentTypes\n \n=\n \nModel\n.\nContainedContentTypes\n,\n \nhtmlName\n \n=\n \nHtml\n.\nNameFor\n(\nm\n \n=>\n \nm\n.\nContainedContentTypes\n)\n \n})",
+            "title": "Content Types"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentTypes/README/#view-components",
+            "text": "",
+            "title": "View Components"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentTypes/README/#selectcontenttypes",
+            "text": "Renders an editor to select a list of content types. It can optionally filter content types of a specific stereotype.\nThe editor returns the selection as a  string[]  on the model.",
+            "title": "SelectContentTypes"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentTypes/README/#parameters",
+            "text": "Parameter  Type  Description      selectedContentTypes  string[]  The list of content types that should be marked as selected when rendering the editor.    htmlName  string  The name of the model property to bind the result to.    stereotype  (optional)  string  A stereotype name to filter the list of content types to be able to select.",
+            "title": "Parameters"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.ContentTypes/README/#sample",
+            "text": "@await   Component . InvokeAsync ( \"SelectContentTypes\" ,   new   {   selectedContentTypes   =   Model . ContainedContentTypes ,   htmlName   =   Html . NameFor ( m   =>   m . ContainedContentTypes )   })",
+            "title": "Sample"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/",
+            "text": "\ufeff# Markdown (Orchard.Markdown)\n\n\nEditors\nLink\n\n\nThe \nMarkdown Part\n editor can be different for each content type. In the \nMarkdown Part\n settings of a \ncontent type, just select the one that needs to be used.\n\n\nThere are two predefined editor names:\n- \nDefault\n is the editor that is used by default\n- \nWysiwyg\n is the editor that provides a WYSIWYG experience\n\n\nCustom Editors\nLink\n\n\nCustomizing the editor can mean to replace the predefined one with different experiences, or to provide\nnew options for the user to choose from.\n\n\nTo create a new custom editor, it is required to provide two shape templates, one to provide\nthe name of the editor (optional if you want to override and existing one), and a shape to\nrender the actual HTML for the editor.\n\n\nDeclaration\nLink\n\n\nTo declare a new editor, create a shape named \nMarkdown_Option__{Name}\n where \n{Name}\n is a value \nof your choosing. This will be represented by a file named \nMarkdown-{Name}.Option.cshtml\n.\n\n\nSample content:\n\n\n@\n{\n\n    \nstring\n \ncurrentEditor\n \n=\n \nModel\n.\nEditor\n;\n\n\n}\n\n\n<\noption\n \nvalue\n=\n\"Wysiwyg\"\n \nselected\n=\n\"@(currentEditor == \"\nWysiwyg\n\")\"\n>\n@T\n[\n\"Wysiwyg editor\"\n]</\noption\n>\n\n\n\n\n\n\nHTML Editor\nLink\n\n\nTo define what HTML to render when the editor is selected from the settings, a shape named \n\nMarkdown_Editor__{Name}\n corresponding to a file \nMarkdown-{Name}.Editor.cshtml\n can be created.\n\n\nSample content:\n\n\n@using\n \nOrchard\n.\nMarkdown\n.\nViewModels\n;\n\n\n@model\n \nMarkdownPartViewModel\n\n\n\n<\nfieldset\n \nclass\n=\n\"form-group\"\n>\n\n    \n<\nlabel\n \nasp\n-\nfor\n=\n\"Markdown\"\n>\n@T\n[\n\"Markdown\"\n]</\nlabel\n>\n\n    \n<\ntextarea\n \nasp\n-\nfor\n=\n\"Markdown\"\n \nrows\n=\n\"5\"\n \nclass\n=\n\"form-control\"\n></\ntextarea\n>\n\n    \n<\nspan\n \nclass\n=\n\"hint\"\n>\n@T\n[\n\"The markdown of the content item.\"\n]</\nspan\n>\n\n\n</\nfieldset\n>\n\n\n\n\n\n\nOverriding the predefined editors\nLink\n\n\nYou can override the HTML editor for the \nDefault\n editor by creating a shape file named \n\nMarkdown.Editor.cshtml\n. The Wysiwyg editor is defined by using the file named \n\nMarkdown-Wysiwyg.Editor.cshtml\n.\n\n\nCREDITS\nLink\n\n\nMarkdig\nLink\n\n\nhttps://github.com/lunet-io/markdig\n\nCopyright (c) 2016, Alexandre Mutel\nBSD-2\n\n\nSimpleMDE\nLink\n\n\nhttps://github.com/NextStepWebs/simplemde-markdown-editor\n\nCopyright (c) 2015 Next Step Webs, Inc.\nMIT",
+            "title": "Markdown"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#editors",
+            "text": "The  Markdown Part  editor can be different for each content type. In the  Markdown Part  settings of a \ncontent type, just select the one that needs to be used.  There are two predefined editor names:\n-  Default  is the editor that is used by default\n-  Wysiwyg  is the editor that provides a WYSIWYG experience",
+            "title": "Editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#custom-editors",
+            "text": "Customizing the editor can mean to replace the predefined one with different experiences, or to provide\nnew options for the user to choose from.  To create a new custom editor, it is required to provide two shape templates, one to provide\nthe name of the editor (optional if you want to override and existing one), and a shape to\nrender the actual HTML for the editor.",
+            "title": "Custom Editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#declaration",
+            "text": "To declare a new editor, create a shape named  Markdown_Option__{Name}  where  {Name}  is a value \nof your choosing. This will be represented by a file named  Markdown-{Name}.Option.cshtml .  Sample content:  @ { \n     string   currentEditor   =   Model . Editor ;  }  < option   value = \"Wysiwyg\"   selected = \"@(currentEditor == \" Wysiwyg \")\" > @T [ \"Wysiwyg editor\" ]</ option >",
+            "title": "Declaration"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#html-editor",
+            "text": "To define what HTML to render when the editor is selected from the settings, a shape named  Markdown_Editor__{Name}  corresponding to a file  Markdown-{Name}.Editor.cshtml  can be created.  Sample content:  @using   Orchard . Markdown . ViewModels ;  @model   MarkdownPartViewModel  < fieldset   class = \"form-group\" > \n     < label   asp - for = \"Markdown\" > @T [ \"Markdown\" ]</ label > \n     < textarea   asp - for = \"Markdown\"   rows = \"5\"   class = \"form-control\" ></ textarea > \n     < span   class = \"hint\" > @T [ \"The markdown of the content item.\" ]</ span >  </ fieldset >",
+            "title": "HTML Editor"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#overriding-the-predefined-editors",
+            "text": "You can override the HTML editor for the  Default  editor by creating a shape file named  Markdown.Editor.cshtml . The Wysiwyg editor is defined by using the file named  Markdown-Wysiwyg.Editor.cshtml .",
+            "title": "Overriding the predefined editors"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#credits",
+            "text": "",
+            "title": "CREDITS"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#markdig",
+            "text": "https://github.com/lunet-io/markdig \nCopyright (c) 2016, Alexandre Mutel\nBSD-2",
+            "title": "Markdig"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Markdown/README/#simplemde",
+            "text": "https://github.com/NextStepWebs/simplemde-markdown-editor \nCopyright (c) 2015 Next Step Webs, Inc.\nMIT",
+            "title": "SimpleMDE"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Menu/README/",
+            "text": "Menu (Orchard.Menu)\nLink\n\n\nCREDITS\nLink\n\n\nnestedSortable jQuery plugin\nLink\n\n\nhttps://github.com/ilikenwf/nestedSortable\n\nLicense: MIT",
+            "title": "Menu"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Menu/README/#menu-orchardmenu",
+            "text": "",
+            "title": "Menu (Orchard.Menu)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Menu/README/#credits",
+            "text": "",
+            "title": "CREDITS"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Menu/README/#nestedsortable-jquery-plugin",
+            "text": "https://github.com/ilikenwf/nestedSortable \nLicense: MIT",
+            "title": "nestedSortable jQuery plugin"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/",
+            "text": "Navigation (Orchard.Navigation)\nLink\n\n\nPurpose\nLink\n\n\nProvides he \nNavigation\n, \nPager\n and \nPagerSlim\n shapes.\n\n\nTheming\nLink\n\n\nPager\nLink\n\n\nThis is a multi-purpose pagination component that renders links to specific page numbers.\nIt can optionally render \nFirst\n and \nLast\n links.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nPage\n\n\nint\n\n\nActive page number\n\n\n\n\n\n\nPageSize\n\n\nint\n\n\nNumber of items per page\n\n\n\n\n\n\nTotalItemCount\n\n\ndouble\n\n\nTotal number of items (used to calculate the number of the last page)\n\n\n\n\n\n\nQuantity\n\n\nint?\n\n\nNumber of pages to show, 7 if not specified\n\n\n\n\n\n\nFirstText\n\n\nobject\n\n\nText of the \"First\" link , default: \nT[\"<<\"]\n\n\n\n\n\n\nPreviousText\n\n\nobject\n\n\nText of the \"Previous\" link , default: \nT[\"<\"]\n\n\n\n\n\n\nNextText\n\n\nobject\n\n\nText of the \"Next\" link , default: \nT[\">\"]\n\n\n\n\n\n\nLastText\n\n\nobject\n\n\nText of the \"Last\" link , default: \nT[\">>\"]\n\n\n\n\n\n\nGapText\n\n\nobject\n\n\nText of the \"Gap\" element , default: \nT[\"...\"]\n\n\n\n\n\n\nPagerId\n\n\nstring\n\n\nAn identifier for the pager. Used to create alternate like \nPager__[PagerId]\n\n\n\n\n\n\nShowNext\n\n\nbool\n\n\nIf true, the \"Next\" link is always displayed\n\n\n\n\n\n\n\n\nProperties inherited from the \nList\n shape\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nId\n\n\nstring\n\n\nThe HTML id used for the pager. default: \nnone\n\n\n\n\n\n\nTag\n\n\nstring\n\n\nThe HTML tag used for the pager. default: \nul\n\n\n\n\n\n\nItemTag\n\n\nstring\n\n\nThe HTML tag used for the pages. default: \nli\n\n\n\n\n\n\nFirstClass\n\n\nstring\n\n\nThe HTML class used for the first page. default: \nfirst\n\n\n\n\n\n\nLastClass\n\n\nstring\n\n\nThe HTML tag used for last page. default: \nlast\n\n\n\n\n\n\nItemClasses\n\n\nList<string>\n\n\nClasses that are assigned to the pages. default: \nnone\n\n\n\n\n\n\nItemAttributes\n\n\nDictionary<string, string>\n\n\nAttributes that are assigned to the pages\n\n\n\n\n\n\n\n\nThe \nPagerId\n property is used to create templates for specific instances. For instance, assigning\nthe value \nMainBlog\n to \nPagerId\n and then rendering the pager will look for a template named \n\nPager-MainBlog.cshtml\n.\n\n\nA pager can be further customized by defining templates for the following shapes;\n- \nPager_Gap\n\n- \nPager_First\n\n- \nPager_Previous\n\n- \nPager_Next\n\n- \nPager_Last\n\n- \nPager_CurrentPage\n\n\nEach of these shapes are ultimately morphed into \nPager_Link\n\nAlternates for each of these shapes are created using the \nPagerId\n like \nPager_Previous__[PagerId]\n which\nwould in turn look for the template \nPager-MainBlog.Previous.cshtml\n.\n\n\nPagerSlim\nLink\n\n\nThis shape renders a pager that is comprised of two links: \nPrevious\n and \nNext\n.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nPreviousClass\n\n\nstring\n\n\nThe HTML class used for the \nPrevious\n link. default: \nnone\n\n\n\n\n\n\nNextClass\n\n\nstring\n\n\nThe HTML class used for the \nNext\n link. default: \nnone\n\n\n\n\n\n\nPreviousText\n\n\nobject\n\n\nText of the \"Previous\" link , default: \nT[\"<\"]\n\n\n\n\n\n\nNextText\n\n\nobject\n\n\nText of the \"Next\" link , default: \nT[\">\"]\n\n\n\n\n\n\n\n\nProperties inherited from the \nList\n shape\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nId\n\n\nstring\n\n\nThe HTML id used for the pager. default: \nnone\n\n\n\n\n\n\nTag\n\n\nstring\n\n\nThe HTML tag used for the pager. default: \nul\n\n\n\n\n\n\nItemTag\n\n\nstring\n\n\nThe HTML tag used for the pages. default: \nli\n\n\n\n\n\n\nFirstClass\n\n\nstring\n\n\nThe HTML class used for the first page. default: \nfirst\n\n\n\n\n\n\nLastClass\n\n\nstring\n\n\nThe HTML tag used for last page. default: \nlast\n\n\n\n\n\n\nItemClasses\n\n\nList<string>\n\n\nClasses that are assigned to the pages. default: \nnone\n\n\n\n\n\n\nItemAttributes\n\n\nDictionary<string, string>\n\n\nAttributes that are assigned to the pages\n\n\n\n\n\n\n\n\nA slim pager can be further customized by defining templates for the following shapes;\n- \nPager_Previous\n\n- \nPager_Next\n\n\nEach of these shapes are ultimately morphed into \nPager_Link\n\nAlternates for each of these shapes are created using the \nPagerId\n like \nPager_Previous__[PagerId]\n which\nwould in turn look for the template \nPager-MainBlog.Previous.cshtml\n.",
+            "title": "Navigation"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/#navigation-orchardnavigation",
+            "text": "",
+            "title": "Navigation (Orchard.Navigation)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/#purpose",
+            "text": "Provides he  Navigation ,  Pager  and  PagerSlim  shapes.",
+            "title": "Purpose"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/#theming",
+            "text": "",
+            "title": "Theming"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/#pager",
+            "text": "This is a multi-purpose pagination component that renders links to specific page numbers.\nIt can optionally render  First  and  Last  links.     Parameter  Type  Description      Page  int  Active page number    PageSize  int  Number of items per page    TotalItemCount  double  Total number of items (used to calculate the number of the last page)    Quantity  int?  Number of pages to show, 7 if not specified    FirstText  object  Text of the \"First\" link , default:  T[\"<<\"]    PreviousText  object  Text of the \"Previous\" link , default:  T[\"<\"]    NextText  object  Text of the \"Next\" link , default:  T[\">\"]    LastText  object  Text of the \"Last\" link , default:  T[\">>\"]    GapText  object  Text of the \"Gap\" element , default:  T[\"...\"]    PagerId  string  An identifier for the pager. Used to create alternate like  Pager__[PagerId]    ShowNext  bool  If true, the \"Next\" link is always displayed     Properties inherited from the  List  shape     Parameter  Type  Description      Id  string  The HTML id used for the pager. default:  none    Tag  string  The HTML tag used for the pager. default:  ul    ItemTag  string  The HTML tag used for the pages. default:  li    FirstClass  string  The HTML class used for the first page. default:  first    LastClass  string  The HTML tag used for last page. default:  last    ItemClasses  List<string>  Classes that are assigned to the pages. default:  none    ItemAttributes  Dictionary<string, string>  Attributes that are assigned to the pages     The  PagerId  property is used to create templates for specific instances. For instance, assigning\nthe value  MainBlog  to  PagerId  and then rendering the pager will look for a template named  Pager-MainBlog.cshtml .  A pager can be further customized by defining templates for the following shapes;\n-  Pager_Gap \n-  Pager_First \n-  Pager_Previous \n-  Pager_Next \n-  Pager_Last \n-  Pager_CurrentPage  Each of these shapes are ultimately morphed into  Pager_Link \nAlternates for each of these shapes are created using the  PagerId  like  Pager_Previous__[PagerId]  which\nwould in turn look for the template  Pager-MainBlog.Previous.cshtml .",
+            "title": "Pager"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Navigation/README/#pagerslim",
+            "text": "This shape renders a pager that is comprised of two links:  Previous  and  Next .     Parameter  Type  Description      PreviousClass  string  The HTML class used for the  Previous  link. default:  none    NextClass  string  The HTML class used for the  Next  link. default:  none    PreviousText  object  Text of the \"Previous\" link , default:  T[\"<\"]    NextText  object  Text of the \"Next\" link , default:  T[\">\"]     Properties inherited from the  List  shape     Parameter  Type  Description      Id  string  The HTML id used for the pager. default:  none    Tag  string  The HTML tag used for the pager. default:  ul    ItemTag  string  The HTML tag used for the pages. default:  li    FirstClass  string  The HTML class used for the first page. default:  first    LastClass  string  The HTML tag used for last page. default:  last    ItemClasses  List<string>  Classes that are assigned to the pages. default:  none    ItemAttributes  Dictionary<string, string>  Attributes that are assigned to the pages     A slim pager can be further customized by defining templates for the following shapes;\n-  Pager_Previous \n-  Pager_Next  Each of these shapes are ultimately morphed into  Pager_Link \nAlternates for each of these shapes are created using the  PagerId  like  Pager_Previous__[PagerId]  which\nwould in turn look for the template  Pager-MainBlog.Previous.cshtml .",
+            "title": "PagerSlim"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/",
+            "text": "Dynamic Cache (Orchard.DynamicCache)\nLink\n\n\nPurpose\nLink\n\n\nDynamic Cache extends Shape events to provide caching capabilities at the shapes level. Cached shapes can be composed of \nother cached shapes.\n\n\nCached shapes are stored using the \nIDynamicCache\n service. It's default implementation is based on \nIDistributedCache\n which is \nitself based on \nIMemoryCache\n.\n\n\nExample:\nLink\n\n\nLayout Shape (not cached)\n- Shape A\n  - Shape A1 (varies by role)\n  - Shape A2\n- Shape B\n  - Shape B1 (varies by query string)\n  - Shape B2\n\n\nRendering cached shapes\nLink\n\n\nWhen the page is rendered this first time, all shapes will be evaluated and stored in the \nIDynamicCache\n service. The content\nof the cached parent shapes will replace their child ones by placeholders similar to ESI \n(\nhttps://en.wikipedia.org/wiki/Edge_Side_Includes\n). \n\n\nOn subsequent requests, if a shape has been cached then it won't be processed (\nProcessing\n event in\nthe \nShapeMetadata\n). Instead, its ESI tags will be processed and replaced by the child content if it's still valid.\n\n\nInvalidating cached shapes\nLink\n\n\nIf a shape cache content is invalidated, it will be reprocessed. \n- If its children are still cached then their cached value will be used.\n- Invalidating a shape will also invalidate all parent shapes.\n\n\nFor instance, if \nShape B2\n is invalidated, \nShape B\n will also be invalidated. When the Layout is rendered, the \nShape B\n code will run \nagain, as will \nShape B2\n, but the cached content of \nShape B1\n will be reused.\n\n\nWell-known Cache tags\nLink\n\n\nHere is a list of common cache tag values that can be used to invalidate cache entries.\n\n\n\n\n\n\n\n\nTag\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\ncontentitemid:{ContentItemId}\n\n\nTriggered when a content item described with its unique id (\n{ContentItemId}\n) is Published, Unpublished or Removed.\n\n\n\n\n\n\nalias:{Alias}\n\n\nTriggered when a content item with a specific alias (\n{Alias}\n) is Published, Unpublished or Removed.\n\n\n\n\n\n\n\n\nVarying contexts\nLink\n\n\nWhen a shape is cached, it will have a different result for each value of the contexts it defined. For instance \nShape A1\n varies\nby role, so each page that is rendered for a user of a different role will get a different value for this shape. The \nShape A\n\ncached content will remain the same and will be reused across requests targeting different user roles.\n\n\nContexts are hierarchical. For instance if a shape varies by \nuser\n and \nuser.roles\n contexts, only the \nuser\n value will be used\nas it's more specialized than the \nuser.roles\n one.\n\n\nContexts can be parameterized, for instance \nquery:age\n will will pick the \nage\n value of the query string.\n\n\nUsage\nLink\n\n\nCaching a shape\nLink\n\n\nShapeMetadata.Cache(string cacheId)\n\n\nWhen called on a shape instances, marks the shape as being cached. Returns a \nCacheContext\n object.\n\n\nExample: \nmyShape.Cache(\"myshape\")\n\n\nCacheContext members\nLink\n\n\n\n\n\n\n\n\nMethod\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nDuring(Timespan)\n\n\nCached the shape for the specific amount of time.\n\n\n\n\n\n\nAddContext(params string[])\n\n\nVaries the cached content on the specified context values.\n\n\n\n\n\n\nRemoveContext(string)\n\n\nRemoves the specified context.\n\n\n\n\n\n\nAddDependency(params string[])\n\n\nDefines the context values that will invalidate the cache entry.\n\n\n\n\n\n\nRemoveDependency(string)\n\n\nRemoves the specified dependency.\n\n\n\n\n\n\nAddTag(string)\n\n\nAdds a tag to the cache entry to that it can be invalidated by this tag value.\n\n\n\n\n\n\nRemoveTag(string)\n\n\nRemoves the specified tag.\n\n\n\n\n\n\n\n\n\n\nNote: \nAddDependency\n is different that \nAddContext\n as it doesn't store multiple values for each context, but invalidates\nthe cached shape content when the value of the context varies. Internally they share the same implementation as the physical\ncache key will contain the dependency context value.\n\n\n\n\nAvailable Contexts\nLink\n\n\n\n\n\n\n\n\nContext\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nfeatures\n\n\nThe list of enabled features.\n\n\n\n\n\n\nfeatures:{featureName}\n\n\nThe specified feature name.\n\n\n\n\n\n\nquery\n\n\nThe list of querystring values.\n\n\n\n\n\n\nquery:{queryName}\n\n\nThe specified query name value.\n\n\n\n\n\n\nuser\n\n\nThe current user.\n\n\n\n\n\n\nuser.roles\n\n\nThe roles of the current user.\n\n\n\n\n\n\nroute\n\n\nThe current request path.\n\n\n\n\n\n\n\n\nShape Tag Helper Attributes\nLink\n\n\nWhen using shape tag helpers, the following attributes can be used:\n\n\n\n\n\n\n\n\nContext\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\ncache-id\n\n\nThe identifier of the cached shape.\n\n\n\n\n\n\ncache-context\n\n\nA set of space/comma separated context values.\n\n\n\n\n\n\ncache-dependency\n\n\nA set of space/comma separated dependency values.\n\n\n\n\n\n\ncache-tag\n\n\nA set of space/comma separated tag values.\n\n\n\n\n\n\ncache-duration\n\n\nThe cache duration of the entry. e.g., \"00:05:00: for 5 minutes.",
+            "title": "Dynamic Cache"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#dynamic-cache-orcharddynamiccache",
+            "text": "",
+            "title": "Dynamic Cache (Orchard.DynamicCache)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#purpose",
+            "text": "Dynamic Cache extends Shape events to provide caching capabilities at the shapes level. Cached shapes can be composed of \nother cached shapes.  Cached shapes are stored using the  IDynamicCache  service. It's default implementation is based on  IDistributedCache  which is \nitself based on  IMemoryCache .",
+            "title": "Purpose"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#example",
+            "text": "Layout Shape (not cached)\n- Shape A\n  - Shape A1 (varies by role)\n  - Shape A2\n- Shape B\n  - Shape B1 (varies by query string)\n  - Shape B2",
+            "title": "Example:"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#rendering-cached-shapes",
+            "text": "When the page is rendered this first time, all shapes will be evaluated and stored in the  IDynamicCache  service. The content\nof the cached parent shapes will replace their child ones by placeholders similar to ESI \n( https://en.wikipedia.org/wiki/Edge_Side_Includes ).   On subsequent requests, if a shape has been cached then it won't be processed ( Processing  event in\nthe  ShapeMetadata ). Instead, its ESI tags will be processed and replaced by the child content if it's still valid.",
+            "title": "Rendering cached shapes"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#invalidating-cached-shapes",
+            "text": "If a shape cache content is invalidated, it will be reprocessed. \n- If its children are still cached then their cached value will be used.\n- Invalidating a shape will also invalidate all parent shapes.  For instance, if  Shape B2  is invalidated,  Shape B  will also be invalidated. When the Layout is rendered, the  Shape B  code will run \nagain, as will  Shape B2 , but the cached content of  Shape B1  will be reused.",
+            "title": "Invalidating cached shapes"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#well-known-cache-tags",
+            "text": "Here is a list of common cache tag values that can be used to invalidate cache entries.     Tag  Description      contentitemid:{ContentItemId}  Triggered when a content item described with its unique id ( {ContentItemId} ) is Published, Unpublished or Removed.    alias:{Alias}  Triggered when a content item with a specific alias ( {Alias} ) is Published, Unpublished or Removed.",
+            "title": "Well-known Cache tags"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#varying-contexts",
+            "text": "When a shape is cached, it will have a different result for each value of the contexts it defined. For instance  Shape A1  varies\nby role, so each page that is rendered for a user of a different role will get a different value for this shape. The  Shape A \ncached content will remain the same and will be reused across requests targeting different user roles.  Contexts are hierarchical. For instance if a shape varies by  user  and  user.roles  contexts, only the  user  value will be used\nas it's more specialized than the  user.roles  one.  Contexts can be parameterized, for instance  query:age  will will pick the  age  value of the query string.",
+            "title": "Varying contexts"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#usage",
+            "text": "",
+            "title": "Usage"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#caching-a-shape",
+            "text": "ShapeMetadata.Cache(string cacheId)  When called on a shape instances, marks the shape as being cached. Returns a  CacheContext  object.  Example:  myShape.Cache(\"myshape\")",
+            "title": "Caching a shape"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#cachecontext-members",
+            "text": "Method  Description      During(Timespan)  Cached the shape for the specific amount of time.    AddContext(params string[])  Varies the cached content on the specified context values.    RemoveContext(string)  Removes the specified context.    AddDependency(params string[])  Defines the context values that will invalidate the cache entry.    RemoveDependency(string)  Removes the specified dependency.    AddTag(string)  Adds a tag to the cache entry to that it can be invalidated by this tag value.    RemoveTag(string)  Removes the specified tag.      Note:  AddDependency  is different that  AddContext  as it doesn't store multiple values for each context, but invalidates\nthe cached shape content when the value of the context varies. Internally they share the same implementation as the physical\ncache key will contain the dependency context value.",
+            "title": "CacheContext members"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#available-contexts",
+            "text": "Context  Description      features  The list of enabled features.    features:{featureName}  The specified feature name.    query  The list of querystring values.    query:{queryName}  The specified query name value.    user  The current user.    user.roles  The roles of the current user.    route  The current request path.",
+            "title": "Available Contexts"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.DynamicCache/README/#shape-tag-helper-attributes",
+            "text": "When using shape tag helpers, the following attributes can be used:     Context  Description      cache-id  The identifier of the cached shape.    cache-context  A set of space/comma separated context values.    cache-dependency  A set of space/comma separated dependency values.    cache-tag  A set of space/comma separated tag values.    cache-duration  The cache duration of the entry. e.g., \"00:05:00: for 5 minutes.",
+            "title": "Shape Tag Helper Attributes"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.OpenId/README/",
+            "text": "Orchard.OpenId\nLink\n\n\nOrchard.OpenId provides an implementation of an OpenID Connect server based on \nOpenIddict\n library. \nIt allows Orchard 2 to act as identity provider to support token authentication without the need of an external identity provider.\nSo, Orchard 2 can be used also as an identity provider for centralizing the user access permissions to external applications not only to Orchard 2 services.\n\n\nFlows supported: \ncode/implicit/hybrid flows\n and \nclient credentials/resource owner password grants\n.\n\n\nConfiguration\nLink\n\n\nConfiguration can be set through OpenID Connect settings menu in the admin dashboard and also through a recipe step.\n\n\nAvailable settings are:\n+ Testing Mode: Enabling Testing mode, removes the need of providing a certificate for signing tokens providing an ephemeral key. Also removes the requirement of using an HTTPS for issuing tokens.\n+ Token Format: there are two options:\n  + JWT: This format uses signed JWT standard tokens (not encrypted). It requires the SSL certificate being used is accepted as a trusted certificate by the client.\n  + Encrypted: This format uses non standard opaque tokens encrypted by the ASP.NET data protection block. It doesn't require the client accept the SSL certificate as a trusted certificate.\n+ Authority: Orchard url used by orchard to act as an identity server.\n+ Audiences: Urls of the resource servers for which the identity server issues valid JWT tokens.\n+ Certificate Store Location: CurrentUser/LocalMachine \nhttps://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storelocation(v=vs.110).aspx\n\n+ Certificate Store Name: AddressBook/AuthRootCertificateAuthority/Disallowed/My/Root/TrustedPeople/TrustedPublisher \nhttps://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storename(v=vs.110).aspx\n\n+ Certificate Thumbprint: The thumbprint of the certificate (It is recommended to not use same certificate it is been used for SSL).\n+ Enable Token Endpoint.\n+ Enable Authorization Endpoint.\n+ Enable Logout Endpoint.\n+ Enable User Info Endpoint.\n+ Allow Password Flow: It requires Token Endpoint is enabled. More info at \nhttps://tools.ietf.org/html/rfc6749#section-1.3.3\n\n+ Allow Client Credentials Flow: It requires Token Endpoint is enabled. More info at \nhttps://tools.ietf.org/html/rfc6749#section-1.3.4\n\n+ Allow Authorization Code Flow: It requires Authorization and Token Endpoints are enabled. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth\n\n+ Allow Implicit Flow: It requires Authorization Endpoint is enabled. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth\n\n+ Allow Hybrid Flow: It requires Authorization and Token Endpoints. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth\n\n+ Allow Refresh Token Flow: It allows to refresh access token using a refresh token. It can be used in combination with Password Flow, Authorization Code Flow and Hybrid Flow. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens\n\n\nA sample of OpenID Connect Settings recipe step:\n\n\n{\n      \"name\": \"openidsettings\",\n      \"TestingModeEnabled\": false,\n      \"AccessTokenFormat\": \"JWT\", //JWT or Encrypted\n      \"Authority\": \"https://www.orchardproject.net\",\n      \"Audiences\": [\"https://www.orchardproject.net\",\"https://orchardharvest.org/\"],\n      \"CertificateStoreLocation\": \"LocalMachine\", //More info: https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storelocation(v=vs.110).aspx\n      \"CertificateStoreName\": \"My\", //More info: https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storename(v=vs.110).aspx\n      \"CertificateThumbPrint\": \"27CCA66EF38EF46CD9022431FB1FF0F2DF5CA1D7\"\n      \"EnableTokenEndpoint\": true,\n      \"EnableAuthorizationEndpoint\": false,\n      \"EnableLogoutEndpoint\": true,\n      \"EnableUserInfoEndpoint\": true,\n      \"AllowPasswordFlow\": true,\n      \"AllowClientCredentialsFlow\": false,\n      \"AllowAuthorizationCodeFlow\": false,\n      \"AllowRefreshTokenFlow\": false,\n      \"AllowImplicitFlow\": false,\n      \"AllowHybridFlow\": false\n}\n\n\n\n\n\nClient OpenID Connect Apps Configuration\nLink\n\n\nOpenID Connect apps can be set through OpenID Connect Apps menu in the admin dashboard and also through a recipe step.\n\n\nOpenID Connect apps require the following configuration.\n+ Id: Unique identifier.\n+ Client Id: Client identifier of the application. It have to be provided by a client when requesting a valid token.\n+ Display Name: Display name associated with the current application.\n+ Type: There are two options:\n  + Confidential: Confidential applications MUST send their client secret when communicating with the token and revocation endpoints. This guarantees that only the legit client can exchange an authorization code or get a refresh token.\n  + Public: Public applications don't use client secret on their communications.\n  + Client Secret: Client secret is a password associated with the application. It will be required when the application is configured as Confidential.\n  + Flows: If general OpenID Connect settings allow this flow, app can also enable this flow.\n  + Allow Password Flow: It requires Token Endpoint is enabled. More info at \nhttps://tools.ietf.org/html/rfc6749#section-1.3.3\n\n  + Allow Client Credentials Flow: It requires Token Endpoint is enabled. More info at \nhttps://tools.ietf.org/html/rfc6749#section-1.3.4\n\n  + Allow Authorization Code Flow: It requires Authorization and Token Endpoints are enabled. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth\n\n  + Allow Implicit Flow: It requires Authorization Endpoint is enabled. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth\n\n  + Allow Hybrid Flow: It requires Authorization and Token Endpoints. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth\n\n  + Allow Refresh Token Flow: It allows to refresh access token using a refresh token. It can be used in combination with Password Flow, Authorization Code Flow and Hybrid Flow. More info at \nhttp://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens\n\n  + Normalized RoleNames: This configuration is only required inf Client Credentials Flow is enabled. It determines the roles assined to the app when it is authenticated using that flow.\n  + Redirect Options: Those options are only required when Implicit Flow, Authorization Code Flow or Allow Hybrid Flow is required:\n  + Logout Redirect Uri: logout callback URL\n  + Redirect Uri: callback URL\n  + Skip Consent: sets if a consent form has to be fulfilled by the user after log in.\n\n\nA sample of OpenID Connect App recipe step:\n\n\n{\n      \"name\": \"openidapplication\",\n      \"ClientId\": \"openidtest\",\n      \"DisplayName\": \"Open Id Test\",\n      \"Type\": \"Confidential\",\n      \"ClientSecret\": \"MyPassword\",\n      \"EnableTokenEndpoint\": true,\n      \"EnableAuthorizationEndpoint\": false,\n      \"EnableLogoutEndpoint\": true,\n      \"EnableUserInfoEndpoint\": true,\n      \"AllowPasswordFlow\": true,\n      \"AllowClientCredentialsFlow\": false,\n      \"AllowAuthorizationCodeFlow\": false,\n      \"AllowRefreshTokenFlow\": false,\n      \"AllowImplicitFlow\": false,\n      \"AllowHybridFlow\": false\n}",
+            "title": "OpenId"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.OpenId/README/#orchardopenid",
+            "text": "Orchard.OpenId provides an implementation of an OpenID Connect server based on  OpenIddict  library. \nIt allows Orchard 2 to act as identity provider to support token authentication without the need of an external identity provider.\nSo, Orchard 2 can be used also as an identity provider for centralizing the user access permissions to external applications not only to Orchard 2 services.  Flows supported:  code/implicit/hybrid flows  and  client credentials/resource owner password grants .",
+            "title": "Orchard.OpenId"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.OpenId/README/#configuration",
+            "text": "Configuration can be set through OpenID Connect settings menu in the admin dashboard and also through a recipe step.  Available settings are:\n+ Testing Mode: Enabling Testing mode, removes the need of providing a certificate for signing tokens providing an ephemeral key. Also removes the requirement of using an HTTPS for issuing tokens.\n+ Token Format: there are two options:\n  + JWT: This format uses signed JWT standard tokens (not encrypted). It requires the SSL certificate being used is accepted as a trusted certificate by the client.\n  + Encrypted: This format uses non standard opaque tokens encrypted by the ASP.NET data protection block. It doesn't require the client accept the SSL certificate as a trusted certificate.\n+ Authority: Orchard url used by orchard to act as an identity server.\n+ Audiences: Urls of the resource servers for which the identity server issues valid JWT tokens.\n+ Certificate Store Location: CurrentUser/LocalMachine  https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storelocation(v=vs.110).aspx \n+ Certificate Store Name: AddressBook/AuthRootCertificateAuthority/Disallowed/My/Root/TrustedPeople/TrustedPublisher  https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storename(v=vs.110).aspx \n+ Certificate Thumbprint: The thumbprint of the certificate (It is recommended to not use same certificate it is been used for SSL).\n+ Enable Token Endpoint.\n+ Enable Authorization Endpoint.\n+ Enable Logout Endpoint.\n+ Enable User Info Endpoint.\n+ Allow Password Flow: It requires Token Endpoint is enabled. More info at  https://tools.ietf.org/html/rfc6749#section-1.3.3 \n+ Allow Client Credentials Flow: It requires Token Endpoint is enabled. More info at  https://tools.ietf.org/html/rfc6749#section-1.3.4 \n+ Allow Authorization Code Flow: It requires Authorization and Token Endpoints are enabled. More info at  http://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth \n+ Allow Implicit Flow: It requires Authorization Endpoint is enabled. More info at  http://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth \n+ Allow Hybrid Flow: It requires Authorization and Token Endpoints. More info at  http://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth \n+ Allow Refresh Token Flow: It allows to refresh access token using a refresh token. It can be used in combination with Password Flow, Authorization Code Flow and Hybrid Flow. More info at  http://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens  A sample of OpenID Connect Settings recipe step:  {\n      \"name\": \"openidsettings\",\n      \"TestingModeEnabled\": false,\n      \"AccessTokenFormat\": \"JWT\", //JWT or Encrypted\n      \"Authority\": \"https://www.orchardproject.net\",\n      \"Audiences\": [\"https://www.orchardproject.net\",\"https://orchardharvest.org/\"],\n      \"CertificateStoreLocation\": \"LocalMachine\", //More info: https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storelocation(v=vs.110).aspx\n      \"CertificateStoreName\": \"My\", //More info: https://msdn.microsoft.com/en-us/library/system.security.cryptography.x509certificates.storename(v=vs.110).aspx\n      \"CertificateThumbPrint\": \"27CCA66EF38EF46CD9022431FB1FF0F2DF5CA1D7\"\n      \"EnableTokenEndpoint\": true,\n      \"EnableAuthorizationEndpoint\": false,\n      \"EnableLogoutEndpoint\": true,\n      \"EnableUserInfoEndpoint\": true,\n      \"AllowPasswordFlow\": true,\n      \"AllowClientCredentialsFlow\": false,\n      \"AllowAuthorizationCodeFlow\": false,\n      \"AllowRefreshTokenFlow\": false,\n      \"AllowImplicitFlow\": false,\n      \"AllowHybridFlow\": false\n}",
+            "title": "Configuration"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.OpenId/README/#client-openid-connect-apps-configuration",
+            "text": "OpenID Connect apps can be set through OpenID Connect Apps menu in the admin dashboard and also through a recipe step.  OpenID Connect apps require the following configuration.\n+ Id: Unique identifier.\n+ Client Id: Client identifier of the application. It have to be provided by a client when requesting a valid token.\n+ Display Name: Display name associated with the current application.\n+ Type: There are two options:\n  + Confidential: Confidential applications MUST send their client secret when communicating with the token and revocation endpoints. This guarantees that only the legit client can exchange an authorization code or get a refresh token.\n  + Public: Public applications don't use client secret on their communications.\n  + Client Secret: Client secret is a password associated with the application. It will be required when the application is configured as Confidential.\n  + Flows: If general OpenID Connect settings allow this flow, app can also enable this flow.\n  + Allow Password Flow: It requires Token Endpoint is enabled. More info at  https://tools.ietf.org/html/rfc6749#section-1.3.3 \n  + Allow Client Credentials Flow: It requires Token Endpoint is enabled. More info at  https://tools.ietf.org/html/rfc6749#section-1.3.4 \n  + Allow Authorization Code Flow: It requires Authorization and Token Endpoints are enabled. More info at  http://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth \n  + Allow Implicit Flow: It requires Authorization Endpoint is enabled. More info at  http://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth \n  + Allow Hybrid Flow: It requires Authorization and Token Endpoints. More info at  http://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth \n  + Allow Refresh Token Flow: It allows to refresh access token using a refresh token. It can be used in combination with Password Flow, Authorization Code Flow and Hybrid Flow. More info at  http://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens \n  + Normalized RoleNames: This configuration is only required inf Client Credentials Flow is enabled. It determines the roles assined to the app when it is authenticated using that flow.\n  + Redirect Options: Those options are only required when Implicit Flow, Authorization Code Flow or Allow Hybrid Flow is required:\n  + Logout Redirect Uri: logout callback URL\n  + Redirect Uri: callback URL\n  + Skip Consent: sets if a consent form has to be fulfilled by the user after log in.  A sample of OpenID Connect App recipe step:  {\n      \"name\": \"openidapplication\",\n      \"ClientId\": \"openidtest\",\n      \"DisplayName\": \"Open Id Test\",\n      \"Type\": \"Confidential\",\n      \"ClientSecret\": \"MyPassword\",\n      \"EnableTokenEndpoint\": true,\n      \"EnableAuthorizationEndpoint\": false,\n      \"EnableLogoutEndpoint\": true,\n      \"EnableUserInfoEndpoint\": true,\n      \"AllowPasswordFlow\": true,\n      \"AllowClientCredentialsFlow\": false,\n      \"AllowAuthorizationCodeFlow\": false,\n      \"AllowRefreshTokenFlow\": false,\n      \"AllowImplicitFlow\": false,\n      \"AllowHybridFlow\": false\n}",
+            "title": "Client OpenID Connect Apps Configuration"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/",
+            "text": "Resources (Orchard.Resources)\nLink\n\n\nPurpose\nLink\n\n\nThe Resources module provides commonly used resources like JavaScript libraries and CSS files. It also enables the Resource Manager\nso any module can describe what resources are necessary on any page or component. When the full page is rendered all the required\nresources are computed and custom \n<script>\n and \n<link>\n tags are rendered accordingly. You can also regsiter custom \n<meta>\n tags.\n\n\nNamed Resources\nLink\n\n\nNamed resources are well-known scripts and stylesheets that are described in a module. They have a name, a type (script, stylesheet) \nand optionally a version. The \nOrchard.Resources\n modules provides some commonly used ones:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nVersions\n\n\nDependencies\n\n\n\n\n\n\n\n\n\n\njQuery\n\n\nScript\n\n\n1.12.4\n\n\n-\n\n\n\n\n\n\njQuery\n\n\nScript\n\n\n2.2.4\n\n\n-\n\n\n\n\n\n\njQuery\n\n\nScript\n\n\n3.1.1\n\n\n-\n\n\n\n\n\n\nBootstrap\n\n\nScript\n\n\n3.3.7, 4.0.0 (4.0.0-alpha.5)\n\n\njQuery\n\n\n\n\n\n\nBootstrap\n\n\nStyle\n\n\n3.3.7, 4.0.0 (4.0.0-alpha.5)\n\n\n-\n\n\n\n\n\n\njquery-ui\n\n\nScript\n\n\n1.12.1\n\n\njQuery\n\n\n\n\n\n\nfont-awesome\n\n\nStyle\n\n\n4.7.0\n\n\n-\n\n\n\n\n\n\n\n\nUsage\nLink\n\n\nThere are two ways to invoke a resource: either by using the \nIResourceManager\n API or a Tag Helper.\nThe API is necessary if you need to inject a resource from code. However it is recommended to use a Tag Helper when inside a view.\n\n\nUsing the API\nLink\n\n\nFrom your module, add a reference to the \nOrchard.Resources.Abstractions\n project.\nFrom the class you want to use the API in, inject the \nOrchard.ResourceManagement.IResourceManager\n interface.\n\n\nRegister a named resource\nLink\n\n\nvar\n \nsettings\n \n=\n \nresourceManager\n.\nRegisterResource\n(\n\"script\"\n,\n \n\"bootstrap\"\n)\n\n\n\n\n\n\nThe result of this call is an object of type \nRequireSettings\n that is used to pass more parameters to the required resource.\n\n\nPlace the resource at the beginning of the HTML document\nLink\n\n\nsettings\n.\nAtHead\n();\n\n\n\n\n\n\nPlace the resource at the end of the HTML document\nLink\n\n\nsettings\n.\nAtFoot\n();\n\n\n\n\n\n\nSet the version to use\nLink\n\n\nsettings\n.\nUseVersion\n(\n\"3.3\"\n);\n\n\n\n\n\n\nThis will use the latest availabe version between \n3.3\n and \n3.4\n. If the version is not available an exception is thrown.\n\n\nRegister custom script\nLink\n\n\nAt the beginning of the HTML document:\n\n\nresourceManager\n.\nRegisterHeadScript\n(\n\"<script>alert('Hello')</script>');\n\n\n\n\n\n\nAt the end of the HTML document:\n\n\nresourceManager\n.\nRegisterFootScript\n(\n\"<script>alert('Hello')</script>');\n\n\n\n\n\n\nAdd custom meta tag\nLink\n\n\nresourceManager\n.\nRegisterMeta\n(\nnew\n \nMetaEntry\n \n{\n \nContent\n \n=\n \n\"Orchard\"\n,\n \nName\n \n=\n \n\"generator\"\n \n});\n\n\n\n\n\n\nYou can also add more content to an existing tag like this:\n\n\nresourceManager\n.\nAppendMeta\n(\nnew\n \nMetaEntry\n \n{\n \nName\n \n=\n \n\"keywords\"\n,\n \nContent\n \n=\n \n\"orchard\"\n \n},\n \n\",\"\n);\n\n\n\n\n\n\nUsing the Tag Helpers\nLink\n\n\nFrom your module, in the \n_ViewImports.cshtml\n or your view, add \n@addTagHelper *, Orchard.ResourceManagement\n.\n\n\nRegister a named resource\nLink\n\n\nThis example registers the script named \nbootstrap\n and all its dependencies (jquery).\n\n\n<\nscript\n \nasp-name\n=\n\"bootstrap\"\n></\nscript\n>\n\n\n\n\n\n\nAnd for a stylesheet:\n\n\n<\nstyle\n \nasp-name\n=\n\"bootstrap\"\n></\nstyle\n>\n\n\n\n\n\n\nForce the CDN\nLink\n\n\nYou can force a resource to be used from its CDN. By default the behavior is defined by configuration.\n\n\n<\nscript\n \nasp-name\n=\n\"bootstrap\"\n \nuse-cdn\n=\n\"true\"\n></\nscript\n>\n\n\n\n\n\n\nUse specific version\nLink\n\n\nThis example will use the latest available version with a Major version of \n3\n, like \n3.3.7\n. If the version is not specified\nthe greatest one is always used.\n\n\n<\nscript\n \nasp-name\n=\n\"bootstrap\"\n \nversion\n=\n\"3\"\n></\nscript\n>\n\n\n\n\n\n\nSpecify location\nLink\n\n\nBy default all scripts are rendered in the footer. You can override it like this:\n\n\n<\nscript\n \nasp-name\n=\n\"bootstrap\"\n \nat\n=\n\"Head\"\n></\nscript\n>\n\n\n\n\n\n\nStyles on the opposite are always injected in the header section of the HTML document.\n\n\nInline definition\nLink\n\n\nYou can declare a new resource directly from a view, and it will be injected only once even if the view is called multiple time.\n\n\n<\nscript\n \nasp-name\n=\n\"foo\"\n \nasp-src\n=\n\"foo.min.js?v=1.0\"\n \ndebug-src\n=\n\"foo.js?v=1.0\"\n \ndepends-on\n=\n\"baz-1.0\"\n \nversion\n=\n\"1.0\"\n></\nscript\n>\n\n\n\n\n\n\nIn this example we also define a dependency on the script named \nbaz\n with the version \n1.0\n. If the version was not set\nthe one with the highest number would be used.\n\n\nYou can also do the same for a stylesheet:\n\n\n<\nstyle\n \nasp-src\n=\n\"bar.min.css\"\n \ndebug-src\n=\n\"bar.css\"\n></\nstyle\n>",
+            "title": "Resources"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#resources-orchardresources",
+            "text": "",
+            "title": "Resources (Orchard.Resources)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#purpose",
+            "text": "The Resources module provides commonly used resources like JavaScript libraries and CSS files. It also enables the Resource Manager\nso any module can describe what resources are necessary on any page or component. When the full page is rendered all the required\nresources are computed and custom  <script>  and  <link>  tags are rendered accordingly. You can also regsiter custom  <meta>  tags.",
+            "title": "Purpose"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#named-resources",
+            "text": "Named resources are well-known scripts and stylesheets that are described in a module. They have a name, a type (script, stylesheet) \nand optionally a version. The  Orchard.Resources  modules provides some commonly used ones:     Name  Type  Versions  Dependencies      jQuery  Script  1.12.4  -    jQuery  Script  2.2.4  -    jQuery  Script  3.1.1  -    Bootstrap  Script  3.3.7, 4.0.0 (4.0.0-alpha.5)  jQuery    Bootstrap  Style  3.3.7, 4.0.0 (4.0.0-alpha.5)  -    jquery-ui  Script  1.12.1  jQuery    font-awesome  Style  4.7.0  -",
+            "title": "Named Resources"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#usage",
+            "text": "There are two ways to invoke a resource: either by using the  IResourceManager  API or a Tag Helper.\nThe API is necessary if you need to inject a resource from code. However it is recommended to use a Tag Helper when inside a view.",
+            "title": "Usage"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#using-the-api",
+            "text": "From your module, add a reference to the  Orchard.Resources.Abstractions  project.\nFrom the class you want to use the API in, inject the  Orchard.ResourceManagement.IResourceManager  interface.",
+            "title": "Using the API"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#register-a-named-resource",
+            "text": "var   settings   =   resourceManager . RegisterResource ( \"script\" ,   \"bootstrap\" )   The result of this call is an object of type  RequireSettings  that is used to pass more parameters to the required resource.",
+            "title": "Register a named resource"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#place-the-resource-at-the-beginning-of-the-html-document",
+            "text": "settings . AtHead ();",
+            "title": "Place the resource at the beginning of the HTML document"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#place-the-resource-at-the-end-of-the-html-document",
+            "text": "settings . AtFoot ();",
+            "title": "Place the resource at the end of the HTML document"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#set-the-version-to-use",
+            "text": "settings . UseVersion ( \"3.3\" );   This will use the latest availabe version between  3.3  and  3.4 . If the version is not available an exception is thrown.",
+            "title": "Set the version to use"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#register-custom-script",
+            "text": "At the beginning of the HTML document:  resourceManager . RegisterHeadScript ( \"<script>alert('Hello')</script>');   At the end of the HTML document:  resourceManager . RegisterFootScript ( \"<script>alert('Hello')</script>');",
+            "title": "Register custom script"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#add-custom-meta-tag",
+            "text": "resourceManager . RegisterMeta ( new   MetaEntry   {   Content   =   \"Orchard\" ,   Name   =   \"generator\"   });   You can also add more content to an existing tag like this:  resourceManager . AppendMeta ( new   MetaEntry   {   Name   =   \"keywords\" ,   Content   =   \"orchard\"   },   \",\" );",
+            "title": "Add custom meta tag"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#using-the-tag-helpers",
+            "text": "From your module, in the  _ViewImports.cshtml  or your view, add  @addTagHelper *, Orchard.ResourceManagement .",
+            "title": "Using the Tag Helpers"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#register-a-named-resource_1",
+            "text": "This example registers the script named  bootstrap  and all its dependencies (jquery).  < script   asp-name = \"bootstrap\" ></ script >   And for a stylesheet:  < style   asp-name = \"bootstrap\" ></ style >",
+            "title": "Register a named resource"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#force-the-cdn",
+            "text": "You can force a resource to be used from its CDN. By default the behavior is defined by configuration.  < script   asp-name = \"bootstrap\"   use-cdn = \"true\" ></ script >",
+            "title": "Force the CDN"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#use-specific-version",
+            "text": "This example will use the latest available version with a Major version of  3 , like  3.3.7 . If the version is not specified\nthe greatest one is always used.  < script   asp-name = \"bootstrap\"   version = \"3\" ></ script >",
+            "title": "Use specific version"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#specify-location",
+            "text": "By default all scripts are rendered in the footer. You can override it like this:  < script   asp-name = \"bootstrap\"   at = \"Head\" ></ script >   Styles on the opposite are always injected in the header section of the HTML document.",
+            "title": "Specify location"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Resources/README/#inline-definition",
+            "text": "You can declare a new resource directly from a view, and it will be injected only once even if the view is called multiple time.  < script   asp-name = \"foo\"   asp-src = \"foo.min.js?v=1.0\"   debug-src = \"foo.js?v=1.0\"   depends-on = \"baz-1.0\"   version = \"1.0\" ></ script >   In this example we also define a dependency on the script named  baz  with the version  1.0 . If the version was not set\nthe one with the highest number would be used.  You can also do the same for a stylesheet:  < style   asp-src = \"bar.min.css\"   debug-src = \"bar.css\" ></ style >",
+            "title": "Inline definition"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Roles/README/",
+            "text": "CONFIGURATION\nLink\n\n\nRoles can be configured through the roles menu in admin dasboard but also through a recipe step.\n\n\nA sample of roles configuration step:\n\n\n{\n    \"name\": \"roles\",\n    \"Roles\": [\n        {\n            \"Name\": \"Journalist\",\n            \"Permissions\": [ \"PublishContent\", \"EditContent\" ]\n        },\n        {\n            \"Name\": \"Suscriptor\",\n            \"Permissions\": [ ]\n        },\n    ]\n}",
+            "title": "Roles"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Roles/README/#configuration",
+            "text": "Roles can be configured through the roles menu in admin dasboard but also through a recipe step.  A sample of roles configuration step:  {\n    \"name\": \"roles\",\n    \"Roles\": [\n        {\n            \"Name\": \"Journalist\",\n            \"Permissions\": [ \"PublishContent\", \"EditContent\" ]\n        },\n        {\n            \"Name\": \"Suscriptor\",\n            \"Permissions\": [ ]\n        },\n    ]\n}",
+            "title": "CONFIGURATION"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Scripting/README/",
+            "text": "\ufeff# Scripting (Orchard.Scripting)\n\n\nPurpose\nLink\n\n\nThe scripting provides an API allowing you to evaluate custom scripts in different languages.\n\n\nUsage\nLink\n\n\nExecuting some script\nLink\n\n\nThe main interface is \nIScriptingManager\n.\n\n\npublic interface IScriptingManager\n{\n    IScriptingEngine GetScriptingEngine(string prefix);\n    object Evaluate(string directive);  \n    IList<IGlobalMethodProvider> GlobalMethodProviders { get; }\n}\n\n\n\n\n\nTo evaluate an expression using a scripting engine, you must know which ones are available\nin the system. For instance, a JavaScript one is available by default and its prefix is \njs\n.\nTo return the current date and time as a string we could to something like this:\n\n\nvar scriptingManager = serviceProvider.GetService<IScriptingManager>();\nvar date = scriptingManager.Evaluate(\"js: Date().toISOString()\");\n\n\n\n\n\nThe \njs:\n prefix is used to describe in which language the code is written. Any module can provide\na new scripting engine by implementing the \nIScriptingEngine\n interface.\n\n\nCustomizing the scripting environment\nLink\n\n\nAny module can provide custom methods for scripts independently of the chosen language. For instance\nthe Contents module provides a \nuuid()\n helper method that computes a unique content item identifier.\n\n\nTo create a global method implement \nIGlobalMethod\n then add it to the current \nIScriptingManager\n \ninstance like this:\n\n\nvar scriptingManager = serviceProvider.GetService<IScriptingManager>();\nvar globalMethodProvider = new MyGlobalMethodProvider();\nscriptingManager.GlobalMethodProviders.Add(globalMethodProvider);",
+            "title": "Scripting"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Scripting/README/#purpose",
+            "text": "The scripting provides an API allowing you to evaluate custom scripts in different languages.",
+            "title": "Purpose"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Scripting/README/#usage",
+            "text": "",
+            "title": "Usage"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Scripting/README/#executing-some-script",
+            "text": "The main interface is  IScriptingManager .  public interface IScriptingManager\n{\n    IScriptingEngine GetScriptingEngine(string prefix);\n    object Evaluate(string directive);  \n    IList<IGlobalMethodProvider> GlobalMethodProviders { get; }\n}  To evaluate an expression using a scripting engine, you must know which ones are available\nin the system. For instance, a JavaScript one is available by default and its prefix is  js .\nTo return the current date and time as a string we could to something like this:  var scriptingManager = serviceProvider.GetService<IScriptingManager>();\nvar date = scriptingManager.Evaluate(\"js: Date().toISOString()\");  The  js:  prefix is used to describe in which language the code is written. Any module can provide\na new scripting engine by implementing the  IScriptingEngine  interface.",
+            "title": "Executing some script"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Scripting/README/#customizing-the-scripting-environment",
+            "text": "Any module can provide custom methods for scripts independently of the chosen language. For instance\nthe Contents module provides a  uuid()  helper method that computes a unique content item identifier.  To create a global method implement  IGlobalMethod  then add it to the current  IScriptingManager  \ninstance like this:  var scriptingManager = serviceProvider.GetService<IScriptingManager>();\nvar globalMethodProvider = new MyGlobalMethodProvider();\nscriptingManager.GlobalMethodProviders.Add(globalMethodProvider);",
+            "title": "Customizing the scripting environment"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Setup/README/",
+            "text": "Setup (Orchard.Setup)\nLink\n\n\nRecipe Parameters\nLink\n\n\nDuring setup, all recipes have access to the setup screen values using these parameters:\n\n\n\n\n\n\n\n\nParameter\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nSiteName\n\n\nThe name of the site\n\n\n\n\n\n\nAdminUsername\n\n\nThe username of the super user\n\n\n\n\n\n\nAdminEmail\n\n\nThe email of the super user\n\n\n\n\n\n\nAdminPassword\n\n\nThe password of the super user\n\n\n\n\n\n\nDatabaseProvider\n\n\nThe database provider\n\n\n\n\n\n\nDatabaseConnectionString\n\n\nThe connection string\n\n\n\n\n\n\nDatabaseTablePrefix\n\n\nThe database table prefix\n\n\n\n\n\n\n\n\nThese parameters can be used in the recipe using a scripted value like \n[js: parameters('AdminUsername')]\n.",
+            "title": "Setup"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Setup/README/#setup-orchardsetup",
+            "text": "",
+            "title": "Setup (Orchard.Setup)"
+        },
+        {
+            "location": "/OrchardCore.Modules/Orchard.Setup/README/#recipe-parameters",
+            "text": "During setup, all recipes have access to the setup screen values using these parameters:     Parameter  Description      SiteName  The name of the site    AdminUsername  The username of the super user    AdminEmail  The email of the super user    AdminPassword  The password of the super user    DatabaseProvider  The database provider    DatabaseConnectionString  The connection string    DatabaseTablePrefix  The database table prefix     These parameters can be used in the recipe using a scripted value like  [js: parameters('AdminUsername')] .",
+            "title": "Recipe Parameters"
+        }
+    ]
+}

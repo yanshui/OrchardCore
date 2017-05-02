@@ -1,0 +1,7 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\bin\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\bin\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\bin\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\obj\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\obj\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\obj\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.XmlRpc.Abstractions\obj\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.pdb

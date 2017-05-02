@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.1">
+    
+    
+      
+        <title>Markdown - Orchard Core Documentation</title>
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr-56ade86843.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application-4d0d3f2fbf.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-f78e5cb881.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="green" data-md-color-accent="light-blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../../.." title="Orchard Core Documentation" class="md-logo md-header-nav__button">
+            <img src="../../../images/orchard-logo.png" width="24" height="24">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  CMS Modules
+                </span>
+              
+            
+            Markdown
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <div class="md-header-nav__source">
+          
+            
+
+
+  
+
+
+  <a href="https://github.com/OrchardCMS/Orchard2" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      OrchardCMS/Orchard2
+    </div>
+  </a>
+
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-logo md-nav__button">
+        <img src="../../../images/orchard-logo.png">
+      </i>
+    
+    Orchard Core Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/OrchardCMS/Orchard2" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      OrchardCMS/Orchard2
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="About Orchard Core" class="md-nav__link">
+      About Orchard Core
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../OrchardCore/Microsoft.AspNetCore.Modules/README/" title="ASP.NET Core Modules" class="md-nav__link">
+      ASP.NET Core Modules
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      CMS Modules
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        CMS Modules
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Body/README/" title="Body" class="md-nav__link">
+      Body
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.ContentFields/README/" title="Content Fields" class="md-nav__link">
+      Content Fields
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.ContentPreview/README/" title="Content Preview" class="md-nav__link">
+      Content Preview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.ContentTypes/README/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Markdown
+      </label>
+    
+    <a href="./" title="Markdown" class="md-nav__link md-nav__link--active">
+      Markdown
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#editors" title="Editors" class="md-nav__link">
+    Editors
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-editors" title="Custom Editors" class="md-nav__link">
+    Custom Editors
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaration" title="Declaration" class="md-nav__link">
+    Declaration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-editor" title="HTML Editor" class="md-nav__link">
+    HTML Editor
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-the-predefined-editors" title="Overriding the predefined editors" class="md-nav__link">
+    Overriding the predefined editors
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" title="CREDITS" class="md-nav__link">
+    CREDITS
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdig" title="Markdig" class="md-nav__link">
+    Markdig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplemde" title="SimpleMDE" class="md-nav__link">
+    SimpleMDE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Menu/README/" title="Menu" class="md-nav__link">
+      Menu
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Navigation/README/" title="Navigation" class="md-nav__link">
+      Navigation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Core Modules
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Core Modules
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.DynamicCache/README/" title="Dynamic Cache" class="md-nav__link">
+      Dynamic Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.OpenId/README/" title="OpenId" class="md-nav__link">
+      OpenId
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Resources/README/" title="Resources" class="md-nav__link">
+      Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Roles/README/" title="Roles" class="md-nav__link">
+      Roles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Scripting/README/" title="Scripting" class="md-nav__link">
+      Scripting
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../Orchard.Setup/README/" title="Setup" class="md-nav__link">
+      Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#editors" title="Editors" class="md-nav__link">
+    Editors
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-editors" title="Custom Editors" class="md-nav__link">
+    Custom Editors
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaration" title="Declaration" class="md-nav__link">
+    Declaration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-editor" title="HTML Editor" class="md-nav__link">
+    HTML Editor
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-the-predefined-editors" title="Overriding the predefined editors" class="md-nav__link">
+    Overriding the predefined editors
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" title="CREDITS" class="md-nav__link">
+    CREDITS
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdig" title="Markdig" class="md-nav__link">
+    Markdig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplemde" title="SimpleMDE" class="md-nav__link">
+    SimpleMDE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Markdown</h1>
+                
+                <p>﻿# Markdown (Orchard.Markdown)</p>
+<h2 id="editors">Editors<a class="headerlink" href="#editors" title="Permanent link">Link</a></h2>
+<p>The <strong>Markdown Part</strong> editor can be different for each content type. In the <strong>Markdown Part</strong> settings of a 
+content type, just select the one that needs to be used.</p>
+<p>There are two predefined editor names:
+- <code>Default</code> is the editor that is used by default
+- <code>Wysiwyg</code> is the editor that provides a WYSIWYG experience</p>
+<h3 id="custom-editors">Custom Editors<a class="headerlink" href="#custom-editors" title="Permanent link">Link</a></h3>
+<p>Customizing the editor can mean to replace the predefined one with different experiences, or to provide
+new options for the user to choose from.</p>
+<p>To create a new custom editor, it is required to provide two shape templates, one to provide
+the name of the editor (optional if you want to override and existing one), and a shape to
+render the actual HTML for the editor.</p>
+<h4 id="declaration">Declaration<a class="headerlink" href="#declaration" title="Permanent link">Link</a></h4>
+<p>To declare a new editor, create a shape named <code>Markdown_Option__{Name}</code> where <code>{Name}</code> is a value 
+of your choosing. This will be represented by a file named <code>Markdown-{Name}.Option.cshtml</code>.</p>
+<p>Sample content:</p>
+<div class="codehilite"><pre><span></span><span class="err">@</span><span class="p">{</span>
+    <span class="kt">string</span> <span class="n">currentEditor</span> <span class="p">=</span> <span class="n">Model</span><span class="p">.</span><span class="n">Editor</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;</span><span class="n">option</span> <span class="k">value</span><span class="p">=</span><span class="s">&quot;Wysiwyg&quot;</span> <span class="n">selected</span><span class="p">=</span><span class="s">&quot;@(currentEditor == &quot;</span><span class="n">Wysiwyg</span><span class="s">&quot;)&quot;</span><span class="p">&gt;</span><span class="n">@T</span><span class="p">[</span><span class="s">&quot;Wysiwyg editor&quot;</span><span class="p">]&lt;/</span><span class="n">option</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<h4 id="html-editor">HTML Editor<a class="headerlink" href="#html-editor" title="Permanent link">Link</a></h4>
+<p>To define what HTML to render when the editor is selected from the settings, a shape named 
+<code>Markdown_Editor__{Name}</code> corresponding to a file <code>Markdown-{Name}.Editor.cshtml</code> can be created.</p>
+<p>Sample content:</p>
+<div class="codehilite"><pre><span></span><span class="n">@using</span> <span class="n">Orchard</span><span class="p">.</span><span class="n">Markdown</span><span class="p">.</span><span class="n">ViewModels</span><span class="p">;</span>
+<span class="n">@model</span> <span class="n">MarkdownPartViewModel</span>
+
+<span class="p">&lt;</span><span class="n">fieldset</span> <span class="n">class</span><span class="p">=</span><span class="s">&quot;form-group&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="n">label</span> <span class="n">asp</span><span class="p">-</span><span class="k">for</span><span class="p">=</span><span class="s">&quot;Markdown&quot;</span><span class="p">&gt;</span><span class="n">@T</span><span class="p">[</span><span class="s">&quot;Markdown&quot;</span><span class="p">]&lt;/</span><span class="n">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="n">textarea</span> <span class="n">asp</span><span class="p">-</span><span class="k">for</span><span class="p">=</span><span class="s">&quot;Markdown&quot;</span> <span class="n">rows</span><span class="p">=</span><span class="s">&quot;5&quot;</span> <span class="n">class</span><span class="p">=</span><span class="s">&quot;form-control&quot;</span><span class="p">&gt;&lt;/</span><span class="n">textarea</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="p">=</span><span class="s">&quot;hint&quot;</span><span class="p">&gt;</span><span class="n">@T</span><span class="p">[</span><span class="s">&quot;The markdown of the content item.&quot;</span><span class="p">]&lt;/</span><span class="n">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="n">fieldset</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<h3 id="overriding-the-predefined-editors">Overriding the predefined editors<a class="headerlink" href="#overriding-the-predefined-editors" title="Permanent link">Link</a></h3>
+<p>You can override the HTML editor for the <code>Default</code> editor by creating a shape file named 
+<code>Markdown.Editor.cshtml</code>. The Wysiwyg editor is defined by using the file named 
+<code>Markdown-Wysiwyg.Editor.cshtml</code>.</p>
+<h2 id="credits">CREDITS<a class="headerlink" href="#credits" title="Permanent link">Link</a></h2>
+<h3 id="markdig">Markdig<a class="headerlink" href="#markdig" title="Permanent link">Link</a></h3>
+<p><a href="https://github.com/lunet-io/markdig">https://github.com/lunet-io/markdig</a>
+Copyright (c) 2016, Alexandre Mutel
+BSD-2</p>
+<h3 id="simplemde">SimpleMDE<a class="headerlink" href="#simplemde" title="Permanent link">Link</a></h3>
+<p><a href="https://github.com/NextStepWebs/simplemde-markdown-editor">https://github.com/NextStepWebs/simplemde-markdown-editor</a>
+Copyright (c) 2015 Next Step Webs, Inc.
+MIT</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../Orchard.ContentTypes/README/" title="Content Types" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Content Types
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../Orchard.Menu/README/" title="Menu" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Menu
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="http://orchardproject.net" class="md-footer-social__link fa fa-globe"></a>
+    
+      <a href="https://github.com/OrchardCMS" class="md-footer-social__link fa fa-github-alt"></a>
+    
+      <a href="https://twitter.com/OrchardCMS" class="md-footer-social__link fa fa-twitter"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application-6b599127bc.js"></script>
+      <script>app.initialize({url:{base:"../../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

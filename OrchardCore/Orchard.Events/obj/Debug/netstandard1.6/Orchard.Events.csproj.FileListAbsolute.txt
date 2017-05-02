@@ -1,0 +1,7 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\bin\Debug\netstandard1.6\Orchard.Events.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\bin\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\bin\Debug\netstandard1.6\Orchard.Events.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\obj\Debug\netstandard1.6\Orchard.Events.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\obj\Debug\netstandard1.6\Orchard.Events.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\obj\Debug\netstandard1.6\Orchard.Events.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\Orchard.Events\obj\Debug\netstandard1.6\Orchard.Events.pdb

@@ -1,0 +1,6 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\bin\Debug\netstandard1.6\OrchardCore.AsBundle.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\bin\Debug\netstandard1.6\OrchardCore.AsBundle.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\bin\Debug\netstandard1.6\OrchardCore.AsBundle.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\obj\Debug\netstandard1.6\OrchardCore.AsBundle.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\obj\Debug\netstandard1.6\OrchardCore.AsBundle.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore\OrchardCore.AsBundle\obj\Debug\netstandard1.6\OrchardCore.AsBundle.pdb

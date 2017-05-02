@@ -1,0 +1,15 @@
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.XmlRpc.deps.json
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.XmlRpc.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.XmlRpc.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Mvc.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.Environment.Extensions.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Orchard.XmlRpc.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\bin\Debug\netstandard1.6\Microsoft.AspNetCore.Modules.Abstractions.pdb
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\obj\Debug\netstandard1.6\Orchard.XmlRpc.csprojResolveAssemblyReference.cache
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\obj\Debug\netstandard1.6\Orchard.XmlRpc.AssemblyInfo.cs
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\obj\Debug\netstandard1.6\Orchard.XmlRpc.dll
+D:\Dev\Orchard\OrchardCore\src\OrchardCore.Modules\Orchard.XmlRpc\obj\Debug\netstandard1.6\Orchard.XmlRpc.pdb
