@@ -11,13 +11,21 @@ namespace OrchardCore.Demo.Drivers
 {
     public class UserProfileDisplayDriver : SectionDisplayDriver<User, UserProfile>
     {
+        public override IDisplayResult Display(UserProfile profile)
+        {
+            return Combine(
+                Shape<SummaryAdminUserProfileViewModel>("UserProfile", model => model.UserProfile = profile).Location("SummaryAdmin", "Meta:1")
+            );
+        }
+
         public override IDisplayResult Edit(UserProfile profile, BuildEditorContext context)
         {
             return Shape<EditUserProfileViewModel>("UserProfile_Edit", model =>
             {
                 model.Age = profile.Age;
                 model.Name = profile.Name;
-            }).Location("Content:2");
+            }).Location("Content:2")
+            .Location("SummaryAdmin", "");
         }
 
         public override async Task<IDisplayResult> UpdateAsync(UserProfile profile, IUpdateModel updater, BuildEditorContext context)

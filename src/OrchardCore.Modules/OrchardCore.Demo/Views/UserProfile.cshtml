@@ -1,0 +1,6 @@
+@model OrchardCore.Demo.ViewModels.SummaryAdminUserProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+    
+@Model.UserProfile.Name (@(Model.UserProfile.Age == 0 ? "0 year" : Localizer.Plural(Model.UserProfile.Age, "1 year", "{0} years").Value))
