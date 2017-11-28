@@ -68,6 +68,7 @@ namespace OrchardCore.ContentManagement.Display
             foreach (var contentTypePartDefinition in contentTypeDefinition.Parts)
             {
                 var partName = contentTypePartDefinition.Name;
+                var partPosition = contentTypePartDefinition.Settings["Position"]?.ToString();
                 var partTypeName = contentTypePartDefinition.PartDefinition.Name;
                 var partActivator = _contentPartFactory.GetTypeActivator(partTypeName);
                 var part = contentItem.Get(partActivator.Type, partName) as ContentPart;
@@ -78,6 +79,7 @@ namespace OrchardCore.ContentManagement.Display
                     {
                         try
                         {
+                            context.DefaultLocation = partPosition;
                             var result = await displayDriver.BuildDisplayAsync(part, contentTypePartDefinition, context);
                             if (result != null)
                             {

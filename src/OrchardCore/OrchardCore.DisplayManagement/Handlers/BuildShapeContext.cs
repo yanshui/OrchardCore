@@ -1,4 +1,4 @@
-﻿using OrchardCore.DisplayManagement.Descriptors;
+using OrchardCore.DisplayManagement.Descriptors;
 using OrchardCore.DisplayManagement.ModelBinding;
 
 namespace OrchardCore.DisplayManagement.Handlers
@@ -21,6 +21,7 @@ namespace OrchardCore.DisplayManagement.Handlers
         public dynamic New => ShapeFactory;
         public IShape Layout { get; set; }
         public string GroupId { get; private set; }
+        public string DefaultLocation { get; set; }
         public string HtmlFieldPrefix { get; protected set; }
         public FindPlacementDelegate FindPlacement { get; set; }
         public IUpdateModel Updater { get; }
