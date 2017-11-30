@@ -20,9 +20,20 @@ provide custom filters for their own purpose. Here is a list of common filters t
 Returns the url of the content item
 
 Input
-```
+<div class="tabs">
+	<ul class="tabs__items">
+		<li class="tabs__item"><a href="#razor">Razor</a></li>
+		<li class="tabs__item"><a href="#liquid">Liquid</a></li>
+	</ul>
+	<div class="tabs__content">
+		<div class="tabs__panel" id="razor" tabindex="-1">
+@await RenderSectionAsync("Header", required: false)
+		</div>
+		<div class="tabs__panel" id="liquid" tabindex="-1">
 {{ Model.ContentItem | display_url }}
-```
+		</div>
+	</div>
+</div>
 
 Output
 ```

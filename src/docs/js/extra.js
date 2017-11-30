@@ -51,3 +51,7 @@
     return branch;
   }
 }());
+
+$(function() {
+	$('.tabs').tabs().on('tabsSelect', '[role=tab]', function(e, data) {	});
+});
