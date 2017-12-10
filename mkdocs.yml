@@ -1,5 +1,5 @@
 site_name: Orchard Core Documentation
-theme_dir: material
+theme_dir: 'src/docs/material'
 theme: 
   name: 'material'
   custom_dir: 'src/docs/material'
