@@ -1,9 +1,7 @@
 site_name: Orchard Core Documentation
 theme_dir: 'src/docs/material'
 theme: 
-  language: 'en'
-  name: null
-  custom_dir: 'src/docs/material'
+  language: en
   logo: 'images/orchard-logo.png'
   font:
     text: 'Open Sans'
