@@ -1,13 +1,13 @@
 site_name: Orchard Core Documentation
 theme: 
-  language: en
+  name: 'material'
+  custom_dir: 'src/docs/material'
   logo: 'images/orchard-logo.png'
   font:
     text: 'Open Sans'
   palette:
     primary: 'green'
     accent: 'light blue'
-theme_dir: 'src/docs/material'
     
 extra:
   social:
