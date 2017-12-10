@@ -3,6 +3,7 @@ theme_dir: 'src/docs/material'
 theme: 
   name: 'material'
   custom_dir: 'src/docs/material'
+  language: 'en'
   logo: 'images/orchard-logo.png'
   font:
     text: 'Open Sans'
