@@ -1,4 +1,4 @@
-﻿using OrchardCore.Modules;
+using OrchardCore.Modules;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
@@ -28,6 +28,9 @@ namespace OrchardCore.Menu
             // LinkMenuItemPart
             services.AddScoped<IContentPartDisplayDriver, LinkMenuItemPartDisplayDriver>();
             services.AddSingleton<ContentPart, LinkMenuItemPart>();
+
+            // Menu Item Handler
+            services.AddScoped<IContentHandler, MenuItemListPartMenuItemHandler>();
         }
     }
 }
