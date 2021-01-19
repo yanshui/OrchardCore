@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.ModelBinding;
@@ -7,18 +6,10 @@ using OrchardCore.DisplayManagement.Views;
 using OrchardCore.Menu.Models;
 using OrchardCore.Menu.ViewModels;
 
-namespace OrchardCore.Lists.Drivers
+namespace OrchardCore.Menu.Drivers
 {
     public class LinkMenuItemPartDisplayDriver : ContentPartDisplayDriver<LinkMenuItemPart>
     {
-        private readonly IContentManager _contentManager;
-
-        public LinkMenuItemPartDisplayDriver(
-            IContentManager contentManager
-            )
-        {
-            _contentManager = contentManager;
-        }
 
         public override IDisplayResult Display(LinkMenuItemPart part, BuildPartDisplayContext context)
         {

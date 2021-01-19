@@ -1,8 +1,6 @@
-﻿using OrchardCore.Environment.Commands;
 using System.Linq;
+using OrchardCore.Environment.Commands;
 using Xunit;
-using System.Reflection;
-using Microsoft.Extensions.Localization;
 
 namespace OrchardCore.Tests.Commands
 {
@@ -27,7 +25,8 @@ namespace OrchardCore.Tests.Commands
 
         public class MyCommand : DefaultCommandHandler
         {
-            public MyCommand() : base(null) {
+            public MyCommand() : base(null)
+            {
             }
 
             public void FooBar()
@@ -56,11 +55,12 @@ namespace OrchardCore.Tests.Commands
             var builder = new CommandHandlerDescriptorBuilder();
             var descriptor = builder.Build(typeof(PublicMethodsOnly));
             Assert.NotNull(descriptor);
-            Assert.Equal(1, descriptor.Commands.Count());
+            Assert.Single(descriptor.Commands);
             Assert.NotNull(descriptor.Commands.SingleOrDefault(d => d.Names.Contains("Method")));
         }
 
 #pragma warning disable 660,661
+
         public class PublicMethodsOnly
         {
 #pragma warning restore 660,661

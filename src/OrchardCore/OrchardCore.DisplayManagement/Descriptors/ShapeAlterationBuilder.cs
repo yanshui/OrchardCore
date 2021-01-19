@@ -19,7 +19,7 @@ namespace OrchardCore.DisplayManagement.Descriptors
         {
             _feature = feature;
             _bindingName = shapeType;
-            var delimiterIndex = shapeType.IndexOf("__");
+            var delimiterIndex = shapeType.IndexOf("__", StringComparison.Ordinal);
 
             if (delimiterIndex < 0)
             {
@@ -43,29 +43,18 @@ namespace OrchardCore.DisplayManagement.Descriptors
             return this;
         }
 
-        public ShapeAlterationBuilder BoundAs(string bindingSource, Func<ShapeDescriptor, Func<DisplayContext, Task<IHtmlContent>>> binder)
+        public ShapeAlterationBuilder BoundAs(string bindingSource, Func<DisplayContext, Task<IHtmlContent>> bindingDelegate)
         {
             // schedule the configuration
             return Configure(descriptor =>
             {
-                Func<DisplayContext, Task<IHtmlContent>> target = null;
-
                 var binding = new ShapeBinding
                 {
-                    ShapeDescriptor = descriptor,
                     BindingName = _bindingName,
                     BindingSource = bindingSource,
                 };
 
-                binding.BindingAsync = displayContext =>
-                {
-                    // when used, first realize the actual target once
-                    if (target == null)
-                        target = binder(binding.ShapeDescriptor);
-
-                    // and execute the re
-                    return target(displayContext);
-                };
+                binding.BindingAsync = bindingDelegate;
 
                 // ShapeDescriptor.Bindings is a case insensitive dictionary
                 descriptor.Bindings[_bindingName] = binding;
@@ -73,6 +62,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is being created.
+        /// </summary>
         public ShapeAlterationBuilder OnCreating(Action<ShapeCreatingContext> action)
         {
             return OnCreating(ctx =>
@@ -82,6 +74,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is being created.
+        /// </summary>
         public ShapeAlterationBuilder OnCreating(Func<ShapeCreatingContext, Task> actionAsync)
         {
             return Configure(descriptor =>
@@ -91,6 +86,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is created.
+        /// </summary>
         public ShapeAlterationBuilder OnCreated(Action<ShapeCreatedContext> action)
         {
             return OnCreated(ctx =>
@@ -100,6 +98,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is being created.
+        /// </summary>
         public ShapeAlterationBuilder OnCreated(Func<ShapeCreatedContext, Task> actionAsync)
         {
             return Configure(descriptor =>
@@ -109,6 +110,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called whenever the shape is displayed, even if it's content is cached.
+        /// </summary>
         public ShapeAlterationBuilder OnDisplaying(Action<ShapeDisplayContext> action)
         {
             return OnDisplaying(ctx =>
@@ -118,6 +122,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called whenever the shape is displayed, even if it's content is cached.
+        /// </summary>
         public ShapeAlterationBuilder OnDisplaying(Func<ShapeDisplayContext, Task> actionAsync)
         {
             return Configure(descriptor =>
@@ -127,6 +134,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is actually rendered and state needs to be loaded.
+        /// </summary>
         public ShapeAlterationBuilder OnProcessing(Action<ShapeDisplayContext> action)
         {
             return OnProcessing(ctx =>
@@ -136,6 +146,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is actually rendered and state needs to be loaded.
+        /// </summary>
         public ShapeAlterationBuilder OnProcessing(Func<ShapeDisplayContext, Task> actionAsync)
         {
             return Configure(descriptor =>
@@ -145,6 +158,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is done being rendered.
+        /// </summary>
         public ShapeAlterationBuilder OnDisplayed(Action<ShapeDisplayContext> action)
         {
             return OnDisplayed(ctx =>
@@ -154,6 +170,9 @@ namespace OrchardCore.DisplayManagement.Descriptors
             });
         }
 
+        /// <summary>
+        /// Called when the shape is done being rendered.
+        /// </summary>
         public ShapeAlterationBuilder OnDisplayed(Func<ShapeDisplayContext, Task> actionAsync)
         {
             return Configure(descriptor =>
@@ -194,7 +213,7 @@ namespace OrchardCore.DisplayManagement.Descriptors
             ShapeType = shapeType;
             DisplayType = displayType;
             Differentiator = differentiator;
-            ZoneShape = ZoneShape;
+            ZoneShape = zoneShape;
         }
 
         public IShape ZoneShape { get; set; }

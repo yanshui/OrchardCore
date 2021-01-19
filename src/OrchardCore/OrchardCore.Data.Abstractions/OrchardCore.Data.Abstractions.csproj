@@ -1,12 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>$(AspNetCoreTargetFramework)</TargetFramework>
     <RootNamespace>OrchardCore.Data</RootNamespace>
+    <!-- NuGet properties-->
+    <Title>OrchardCore Data Abstractions</Title>
+    <Description>$(OCCMSDescription)
+    
+    Abstractions for data access functionality</Description>
+    <PackageTags>$(PackageTags) OrchardCoreCMS Data Abstractions</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="YesSql.Core" />
   </ItemGroup>
 

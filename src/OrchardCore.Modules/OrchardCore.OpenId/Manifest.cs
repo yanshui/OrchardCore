@@ -3,9 +3,9 @@ using OrchardCore.OpenId;
 
 [assembly: Module(
     Name = "OpenID",
-    Author = "The Orchard Team",
-    Website = "http://orchardproject.net",
-    Version = "2.0.0"
+    Author = ManifestConstants.OrchardCoreTeam,
+    Website = ManifestConstants.OrchardCoreWebsite,
+    Version = ManifestConstants.OrchardCoreVersion
 )]
 
 [assembly: Feature(
@@ -13,6 +13,14 @@ using OrchardCore.OpenId;
     Name = "OpenID Core Components",
     Category = "OpenID Connect",
     Description = "Registers the core components used by the OpenID module."
+)]
+
+[assembly: Feature(
+    Id = OpenIdConstants.Features.Client,
+    Name = "OpenID Client",
+    Category = "OpenID Connect",
+    Description = "Authenticates users from an external OpenID Connect identity provider.",
+    Dependencies = new[] { OpenIdConstants.Features.Core }
 )]
 
 [assembly: Feature(
@@ -31,11 +39,7 @@ using OrchardCore.OpenId;
     Dependencies = new[]
     {
         OpenIdConstants.Features.Core,
-        OpenIdConstants.Features.Management,
-        "OrchardCore.Authentication",
-        "OrchardCore.DataProtection",
-        "OrchardCore.Users",
-        "OrchardCore.Roles"
+        OpenIdConstants.Features.Management
     }
 )]
 
@@ -44,10 +48,5 @@ using OrchardCore.OpenId;
     Name = "OpenID Token Validation",
     Category = "OpenID Connect",
     Description = "Validates tokens issued by the Orchard OpenID server or by a remote server supporting JWT and OpenID Connect discovery.",
-    Dependencies = new[]
-    {
-        OpenIdConstants.Features.Core,
-        "OrchardCore.Authentication",
-        "OrchardCore.DataProtection"
-    }
+    Dependencies = new[] { OpenIdConstants.Features.Core }
 )]

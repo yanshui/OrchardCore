@@ -1,21 +1,20 @@
-﻿@model OrchardCore.Markdown.ViewModels.EditMarkdownFieldViewModel
+@model OrchardCore.Markdown.ViewModels.EditMarkdownFieldViewModel
+@using OrchardCore.ContentLocalization
 @using OrchardCore.ContentManagement.Metadata.Models
 @using OrchardCore.Markdown.Settings;
 
 @{
-    var settings = Model.PartFieldDefinition.Settings.ToObject<MarkdownFieldSettings>();
+    var settings = Model.PartFieldDefinition.GetSettings<MarkdownFieldSettings>();
+    var culture = await Orchard.GetContentCultureAsync(Model.Field.ContentItem);
 }
 
-@{
-    // Morph the current shape to the correct editor shape based on its Editor property
-    var shape = Model as OrchardCore.DisplayManagement.IShape;
-    shape.Metadata.Alternates.Clear();
-    shape.Metadata.Type = "MarkdownField_Editor";
+@await DisplayAsync(await New.ShortcodeModal())
 
-    if (!String.IsNullOrEmpty(settings.Editor))
+<div class="form-group">
+    <label asp-for="Markdown">@Model.PartFieldDefinition.DisplayName()</label>
+    <input asp-for="Markdown" class="form-control content-preview-text shortcode-modal-input" dir="@culture.GetLanguageDirection()" />
+    @if (!String.IsNullOrEmpty(settings.Hint))
     {
-        shape.Metadata.Alternates.Add($"MarkdownField_Editor__{settings.Editor}");
+        <span class="hint">@settings.Hint</span>
     }
-}
-
-@await DisplayAsync(Model)
+</div>

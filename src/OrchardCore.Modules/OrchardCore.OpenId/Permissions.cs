@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using OrchardCore.Security.Permissions;
 
 namespace OrchardCore.OpenId
@@ -11,18 +13,26 @@ namespace OrchardCore.OpenId
         public static readonly Permission ManageScopes
             = new Permission(nameof(ManageScopes), "View, add, edit and remove the OpenID Connect scopes.");
 
+        public static readonly Permission ManageClientSettings
+            = new Permission(nameof(ManageClientSettings), "View and edit the OpenID Connect client settings.");
+
         public static readonly Permission ManageServerSettings
             = new Permission(nameof(ManageServerSettings), "View and edit the OpenID Connect server settings.");
 
         public static readonly Permission ManageValidationSettings
             = new Permission(nameof(ManageValidationSettings), "View and edit the OpenID Connect server settings.");
 
-        public IEnumerable<Permission> GetPermissions()
+        public Task<IEnumerable<Permission>> GetPermissionsAsync()
         {
-            yield return ManageApplications;
-            yield return ManageScopes;
-            yield return ManageServerSettings;
-            yield return ManageValidationSettings;
+            return Task.FromResult(new[]
+            {
+                ManageApplications,
+                ManageScopes,
+                ManageClientSettings,
+                ManageServerSettings,
+                ManageValidationSettings
+            }
+            .AsEnumerable());
         }
 
         public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
@@ -34,6 +44,7 @@ namespace OrchardCore.OpenId
                 {
                     ManageApplications,
                     ManageScopes,
+                    ManageClientSettings,
                     ManageServerSettings,
                     ManageValidationSettings
                 }

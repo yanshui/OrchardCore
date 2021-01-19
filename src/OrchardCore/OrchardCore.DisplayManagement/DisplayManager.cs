@@ -1,42 +1,34 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OrchardCore.Modules;
 using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Descriptors;
 using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.DisplayManagement.Layout;
 using OrchardCore.DisplayManagement.ModelBinding;
-using OrchardCore.DisplayManagement.Theming;
+using OrchardCore.Modules;
 
 namespace OrchardCore.DisplayManagement
 {
     public class DisplayManager<TModel> : BaseDisplayManager, IDisplayManager<TModel>
     {
         private readonly IEnumerable<IDisplayDriver<TModel>> _drivers;
-        private readonly IShapeTableManager _shapeTableManager;
         private readonly IShapeFactory _shapeFactory;
-        private readonly IThemeManager _themeManager;
         private readonly ILayoutAccessor _layoutAccessor;
+        private readonly ILogger _logger;
 
         public DisplayManager(
             IEnumerable<IDisplayDriver<TModel>> drivers,
-            IShapeTableManager shapeTableManager,
             IShapeFactory shapeFactory,
-            IThemeManager themeManager,
+            IEnumerable<IShapePlacementProvider> placementProviders,
             ILogger<DisplayManager<TModel>> logger,
             ILayoutAccessor layoutAccessor
-            ) : base(shapeTableManager, shapeFactory, themeManager)
+            ) : base(shapeFactory, placementProviders)
         {
-            _shapeTableManager = shapeTableManager;
             _shapeFactory = shapeFactory;
-            _themeManager = themeManager;
             _layoutAccessor = layoutAccessor;
             _drivers = drivers;
-
-            Logger = logger;
+            _logger = logger;
         }
-
-        ILogger Logger { get; set; }
 
         public async Task<IShape> BuildDisplayAsync(TModel model, IUpdateModel updater, string displayType = null, string group = null)
         {
@@ -61,19 +53,19 @@ namespace OrchardCore.DisplayManagement
                 group ?? "",
                 _shapeFactory,
                 await _layoutAccessor.GetLayoutAsync(),
-                updater
+                new ModelStateWrapperUpdater(updater)
             );
 
             await BindPlacementAsync(context);
 
-            await _drivers.InvokeAsync(async driver =>
+            await _drivers.InvokeAsync(async (driver, model, context) =>
             {
                 var result = await driver.BuildDisplayAsync(model, context);
                 if (result != null)
                 {
                     await result.ApplyAsync(context);
                 }
-            }, Logger);
+            }, model, context, _logger);
 
             return shape;
         }
@@ -95,19 +87,19 @@ namespace OrchardCore.DisplayManagement
                 "",
                 _shapeFactory,
                 await _layoutAccessor.GetLayoutAsync(),
-                updater
+                new ModelStateWrapperUpdater(updater)
             );
 
             await BindPlacementAsync(context);
 
-            await _drivers.InvokeAsync(async driver =>
+            await _drivers.InvokeAsync(async (driver, model, context) =>
             {
                 var result = await driver.BuildEditorAsync(model, context);
                 if (result != null)
                 {
                     await result.ApplyAsync(context);
                 }
-            }, Logger);
+            }, model, context, _logger);
 
             return shape;
         }
@@ -129,19 +121,19 @@ namespace OrchardCore.DisplayManagement
                 "",
                 _shapeFactory,
                 await _layoutAccessor.GetLayoutAsync(),
-                updater
+                new ModelStateWrapperUpdater(updater)
             );
 
             await BindPlacementAsync(context);
 
-            await _drivers.InvokeAsync(async driver =>
+            await _drivers.InvokeAsync(async (driver, model, context) =>
             {
                 var result = await driver.UpdateEditorAsync(model, context);
                 if (result != null)
                 {
                     await result.ApplyAsync(context);
                 }
-            }, Logger);
+            }, model, context, _logger);
 
             return shape;
         }

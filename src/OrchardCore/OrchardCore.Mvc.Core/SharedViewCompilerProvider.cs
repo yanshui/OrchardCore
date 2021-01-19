@@ -1,105 +1,40 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
-using Microsoft.AspNetCore.Mvc.Razor.Internal;
-using Microsoft.AspNetCore.Razor.Language;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OrchardCore.Mvc
 {
+    /// <summary>
+    /// Shares across tenants the same <see cref="IViewCompiler"/>.
+    /// </summary>
     public class SharedViewCompilerProvider : IViewCompilerProvider
     {
-        private object _initializeLock = new object();
-        private bool _initialized;
+        private object _synLock = new object();
+        private static IViewCompiler _compiler;
+        private readonly IServiceProvider _services;
 
-        private readonly ApplicationPartManager _applicationPartManager;
-        private readonly IRazorViewEngineFileProviderAccessor _fileProviderAccessor;
-        private readonly IEnumerable<IApplicationFeatureProvider<ViewsFeature>> _viewsFeatureProviders;
-        private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly RazorTemplateEngine _razorTemplateEngine;
-        private readonly CSharpCompiler _csharpCompiler;
-        private readonly RazorViewEngineOptions _viewEngineOptions;
-        private readonly ILogger<SharedViewCompilerProvider> _logger;
-        private IViewCompiler _compiler;
-
-
-        public SharedViewCompilerProvider(
-            ApplicationPartManager applicationPartManager,
-            IRazorViewEngineFileProviderAccessor fileProviderAccessor,
-            IEnumerable<IApplicationFeatureProvider<ViewsFeature>> viewsFeatureProviders,
-            IHostingEnvironment hostingEnvironment,
-            RazorTemplateEngine razorTemplateEngine,
-            CSharpCompiler csharpCompiler,
-            IOptions<RazorViewEngineOptions> viewEngineOptionsAccessor,
-            ILoggerFactory loggerFactory)
+        public SharedViewCompilerProvider(IServiceProvider services)
         {
-            _applicationPartManager = applicationPartManager;
-            _fileProviderAccessor = fileProviderAccessor;
-            _viewsFeatureProviders = viewsFeatureProviders;
-            _hostingEnvironment = hostingEnvironment;
-            _razorTemplateEngine = razorTemplateEngine;
-            _csharpCompiler = csharpCompiler;
-            _viewEngineOptions = viewEngineOptionsAccessor.Value;
-            _logger = loggerFactory.CreateLogger<SharedViewCompilerProvider>();
+            _services = services;
         }
 
         public IViewCompiler GetCompiler()
         {
-            var fileProvider = _fileProviderAccessor.FileProvider;
-            if (fileProvider is NullFileProvider)
+            if (_compiler != null)
             {
-                var message = string.Format(CultureInfo.CurrentCulture,
-                    "'{0}.{1}' must not be empty. At least one '{2}' is required to locate a view for rendering.",
-                    typeof(RazorViewEngineOptions).FullName,
-                    nameof(RazorViewEngineOptions.FileProviders),
-                    typeof(IFileProvider).FullName);
-                throw new InvalidOperationException(message);
+                return _compiler;
             }
 
-            return LazyInitializer.EnsureInitialized(
-                ref _compiler,
-                ref _initialized,
-                ref _initializeLock,
-                CreateCompiler);
-        }
-
-        private IViewCompiler CreateCompiler()
-        {
-            var feature = new ViewsFeature();
-
-            var featureProviders = _applicationPartManager.FeatureProviders
-                .OfType<IApplicationFeatureProvider<ViewsFeature>>()
-                .ToList();
-
-            featureProviders.AddRange(_viewsFeatureProviders);
-
-            var assemblyParts =
-                new AssemblyPart[]
-                {
-                    new AssemblyPart(Assembly.Load(new AssemblyName(_hostingEnvironment.ApplicationName)))
-                };
-
-            foreach (var provider in featureProviders)
+            lock (_synLock)
             {
-                provider.PopulateFeature(assemblyParts, feature);
+                _compiler = _services
+                    .GetServices<IViewCompilerProvider>()
+                    .FirstOrDefault()
+                    .GetCompiler();
             }
 
-            return new SharedRazorViewCompiler(
-                _fileProviderAccessor.FileProvider,
-                _razorTemplateEngine,
-                _csharpCompiler,
-                _viewEngineOptions.CompilationCallback,
-                feature.ViewDescriptors,
-                _logger);
+            return _compiler;
         }
     }
 }

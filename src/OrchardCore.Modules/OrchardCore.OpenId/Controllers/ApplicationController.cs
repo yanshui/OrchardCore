@@ -3,13 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
-using OpenIddict.Core;
+using OpenIddict.Abstractions;
 using OrchardCore.Admin;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Notify;
@@ -17,14 +15,12 @@ using OrchardCore.Environment.Shell.Descriptor.Models;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
 using OrchardCore.OpenId.Abstractions.Descriptors;
-using OrchardCore.OpenId.Abstractions.Models;
+using OrchardCore.OpenId.Abstractions.Managers;
 using OrchardCore.OpenId.Services;
-using OrchardCore.OpenId.Services.Managers;
 using OrchardCore.OpenId.Settings;
 using OrchardCore.OpenId.ViewModels;
 using OrchardCore.Security.Services;
 using OrchardCore.Settings;
-using OrchardCore.Users;
 
 namespace OrchardCore.OpenId.Controllers
 {
@@ -32,62 +28,54 @@ namespace OrchardCore.OpenId.Controllers
     public class ApplicationController : Controller
     {
         private readonly IAuthorizationService _authorizationService;
-        private readonly IStringLocalizer<ApplicationController> T;
-        private readonly IHtmlLocalizer<ApplicationController> H;
+        private readonly IStringLocalizer S;
+        private readonly IHtmlLocalizer H;
         private readonly ISiteService _siteService;
-        private readonly IShapeFactory _shapeFactory;
-        private readonly IRoleProvider _roleProvider;
-        private readonly OpenIdApplicationManager _applicationManager;
+        private readonly IOpenIdApplicationManager _applicationManager;
+        private readonly IOpenIdScopeManager _scopeManager;
         private readonly INotifier _notifier;
         private readonly ShellDescriptor _shellDescriptor;
-        private readonly UserManager<IUser> _userManager;
-        private readonly IOptions<IdentityOptions> _identityOptions;
+        private readonly dynamic New;
 
         public ApplicationController(
             IShapeFactory shapeFactory,
             ISiteService siteService,
             IStringLocalizer<ApplicationController> stringLocalizer,
             IAuthorizationService authorizationService,
-            IRoleProvider roleProvider,
-            OpenIdApplicationManager applicationManager,
-            UserManager<IUser> userManager,
-            IOptions<IdentityOptions> identityOptions,
+            IOpenIdApplicationManager applicationManager,
+            IOpenIdScopeManager scopeManager,
             IHtmlLocalizer<ApplicationController> htmlLocalizer,
             INotifier notifier,
             ShellDescriptor shellDescriptor)
         {
-            _shapeFactory = shapeFactory;
+            New = shapeFactory;
             _siteService = siteService;
-            T = stringLocalizer;
+            S = stringLocalizer;
             H = htmlLocalizer;
             _authorizationService = authorizationService;
             _applicationManager = applicationManager;
-            _roleProvider = roleProvider;
+            _scopeManager = scopeManager;
             _notifier = notifier;
             _shellDescriptor = shellDescriptor;
-            _userManager = userManager;
-            _identityOptions = identityOptions;
         }
 
         public async Task<ActionResult> Index(PagerParameters pagerParameters)
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var siteSettings = await _siteService.GetSiteSettingsAsync();
             var pager = new Pager(pagerParameters, siteSettings.PageSize);
+            var count = await _applicationManager.CountAsync();
 
             var model = new OpenIdApplicationsIndexViewModel
             {
-                Pager = await _shapeFactory.CreateAsync("Pager", new
-                {
-                    TotalItemCount = await _applicationManager.CountAsync()
-                })
+                Pager = (await New.Pager(pager)).TotalItemCount(count)
             };
 
-            foreach (var application in await _applicationManager.ListAsync(pager.PageSize, pager.GetStartIndex()))
+            await foreach (var application in _applicationManager.ListAsync(pager.PageSize, pager.GetStartIndex()))
             {
                 model.Applications.Add(new OpenIdApplicationEntry
                 {
@@ -104,19 +92,35 @@ namespace OrchardCore.OpenId.Controllers
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var model = new CreateOpenIdApplicationViewModel();
 
-            foreach (var role in await _roleProvider.GetRoleNamesAsync())
+            var roleService = HttpContext.RequestServices?.GetService<IRoleService>();
+            if (roleService != null)
             {
-                model.RoleEntries.Add(new CreateOpenIdApplicationViewModel.RoleEntry
+                foreach (var role in await roleService.GetRoleNamesAsync())
                 {
-                    Name = role
-                });
+                    model.RoleEntries.Add(new CreateOpenIdApplicationViewModel.RoleEntry
+                    {
+                        Name = role
+                    });
+                }
+            }
+            else
+            {
+                _notifier.Warning(H["There are no registered services to provide roles."]);
             }
 
+            await foreach (var scope in _scopeManager.ListAsync(null, null, default))
+            {
+                model.ScopeEntries.Add(new CreateOpenIdApplicationViewModel.ScopeEntry
+                {
+                    Name = await _scopeManager.GetNameAsync(scope)
+                });
+            }
+            
             ViewData[nameof(OpenIdServerSettings)] = await GetServerSettingsAsync();
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
@@ -127,36 +131,30 @@ namespace OrchardCore.OpenId.Controllers
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             if (!string.IsNullOrEmpty(model.ClientSecret) &&
                  string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError(nameof(model.ClientSecret), T["No client secret can be set for public applications."]);
+                ModelState.AddModelError(nameof(model.ClientSecret), S["No client secret can be set for public applications."]);
             }
             else if (string.IsNullOrEmpty(model.ClientSecret) &&
                      string.Equals(model.Type, OpenIddictConstants.ClientTypes.Confidential, StringComparison.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError(nameof(model.ClientSecret), T["The client secret is required for confidential applications."]);
+                ModelState.AddModelError(nameof(model.ClientSecret), S["The client secret is required for confidential applications."]);
             }
 
-            if (!model.AllowAuthorizationCodeFlow && !model.AllowClientCredentialsFlow &&
-                !model.AllowImplicitFlow && !model.AllowPasswordFlow && !model.AllowRefreshTokenFlow)
+            if (!string.IsNullOrEmpty(model.ClientId) && await _applicationManager.FindByClientIdAsync(model.ClientId) != null)
             {
-                ModelState.AddModelError(string.Empty, "At least one flow must be enabled.");
-            }
-
-            if (await _applicationManager.FindByClientIdAsync(model.ClientId) != null)
-            {
-                ModelState.AddModelError(nameof(model.ClientId), T["The client identifier is already taken by another application."]);
+                ModelState.AddModelError(nameof(model.ClientId), S["The client identifier is already taken by another application."]);
             }
 
             if (!ModelState.IsValid)
             {
                 ViewData[nameof(OpenIdServerSettings)] = await GetServerSettingsAsync();
                 ViewData["ReturnUrl"] = returnUrl;
-                return View("Create", model);
+                return View(model);
             }
 
             var descriptor = new OpenIdApplicationDescriptor
@@ -168,6 +166,10 @@ namespace OrchardCore.OpenId.Controllers
                 Type = model.Type
             };
 
+            if (model.AllowLogoutEndpoint)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
+            }
             if (model.AllowAuthorizationCodeFlow)
             {
                 descriptor.Permissions.Add(OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode);
@@ -198,17 +200,46 @@ namespace OrchardCore.OpenId.Controllers
                 descriptor.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Token);
             }
 
+            if (model.AllowAuthorizationCodeFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.Code);
+            }
+            if (model.AllowImplicitFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.IdToken);
+
+                if (string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
+                {
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.IdTokenToken);
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.Token);
+                }
+            }
+            if (model.AllowHybridFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken);
+
+                if (string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
+                {
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeIdTokenToken);
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeToken);
+                }
+            }
+
             descriptor.PostLogoutRedirectUris.UnionWith(
-                from uri in model.PostLogoutRedirectUris?.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
+                from uri in model.PostLogoutRedirectUris?.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
                 select new Uri(uri, UriKind.Absolute));
 
             descriptor.RedirectUris.UnionWith(
-                from uri in model.RedirectUris?.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
+                from uri in model.RedirectUris?.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
                 select new Uri(uri, UriKind.Absolute));
 
             descriptor.Roles.UnionWith(model.RoleEntries
                 .Where(role => role.Selected)
                 .Select(role => role.Name));
+
+            descriptor.Permissions.UnionWith(model.ScopeEntries
+                .Where(scope => scope.Selected)
+                .Select(scope => OpenIddictConstants.Permissions.Prefixes.Scope + scope.Name));
 
             await _applicationManager.CreateAsync(descriptor);
 
@@ -224,7 +255,7 @@ namespace OrchardCore.OpenId.Controllers
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var application = await _applicationManager.FindByPhysicalIdAsync(id);
@@ -233,7 +264,7 @@ namespace OrchardCore.OpenId.Controllers
                 return NotFound();
             }
 
-            Task<bool> HasPermissionAsync(string permission) => _applicationManager.HasPermissionAsync(application, permission);
+            ValueTask<bool> HasPermissionAsync(string permission) => _applicationManager.HasPermissionAsync(application, permission);
 
             var model = new EditOpenIdApplicationViewModel
             {
@@ -242,6 +273,7 @@ namespace OrchardCore.OpenId.Controllers
                 AllowImplicitFlow = await HasPermissionAsync(OpenIddictConstants.Permissions.GrantTypes.Implicit),
                 AllowPasswordFlow = await HasPermissionAsync(OpenIddictConstants.Permissions.GrantTypes.Password),
                 AllowRefreshTokenFlow = await HasPermissionAsync(OpenIddictConstants.Permissions.GrantTypes.RefreshToken),
+                AllowLogoutEndpoint = await HasPermissionAsync(OpenIddictConstants.Permissions.Endpoints.Logout),
                 ClientId = await _applicationManager.GetClientIdAsync(application),
                 ConsentType = await _applicationManager.GetConsentTypeAsync(application),
                 DisplayName = await _applicationManager.GetDisplayNameAsync(application),
@@ -251,12 +283,33 @@ namespace OrchardCore.OpenId.Controllers
                 Type = await _applicationManager.GetClientTypeAsync(application)
             };
 
-            foreach (var role in await _roleProvider.GetRoleNamesAsync())
+            var roleService = HttpContext.RequestServices?.GetService<IRoleService>();
+            if (roleService != null)
             {
-                model.RoleEntries.Add(new EditOpenIdApplicationViewModel.RoleEntry
+                var roles = await _applicationManager.GetRolesAsync(application);
+
+                foreach (var role in await roleService.GetRoleNamesAsync())
                 {
-                    Name = role,
-                    Selected = await _applicationManager.IsInRoleAsync(application, role)
+                    model.RoleEntries.Add(new EditOpenIdApplicationViewModel.RoleEntry
+                    {
+                        Name = role,
+                        Selected = roles.Contains(role, StringComparer.OrdinalIgnoreCase)
+                    });
+                }
+            }
+            else
+            {
+                _notifier.Warning(H["There are no registered services to provide roles."]);
+            }
+
+            var permissions = await _applicationManager.GetPermissionsAsync(application);
+            await foreach (var scope in _scopeManager.ListAsync())
+            {
+                var scopeName = await _scopeManager.GetNameAsync(scope);
+                model.ScopeEntries.Add(new EditOpenIdApplicationViewModel.ScopeEntry
+                {
+                    Name = scopeName,
+                    Selected = await _applicationManager.HasPermissionAsync(application, OpenIddictConstants.Permissions.Prefixes.Scope + scopeName)
                 });
             }
 
@@ -270,48 +323,37 @@ namespace OrchardCore.OpenId.Controllers
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
+            }
+
+            var application = await _applicationManager.FindByPhysicalIdAsync(model.Id);
+            if (application == null)
+            {
+                return NotFound();
+            }
+
+            // If the application was a public client and is now a confidential client, ensure a client secret was provided.
+            if (string.IsNullOrEmpty(model.ClientSecret) &&
+               !string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase) &&
+                await _applicationManager.HasClientTypeAsync(application, OpenIddictConstants.ClientTypes.Public))
+            {
+                ModelState.AddModelError(nameof(model.ClientSecret), S["Setting a new client secret is required."]);
             }
 
             if (!string.IsNullOrEmpty(model.ClientSecret) &&
                  string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError(nameof(model.ClientSecret), T["No client secret can be set for public applications."]);
+                ModelState.AddModelError(nameof(model.ClientSecret), S["No client secret can be set for public applications."]);
             }
-            else if (string.IsNullOrEmpty(model.ClientSecret) &&
-                     string.Equals(model.Type, OpenIddictConstants.ClientTypes.Confidential, StringComparison.OrdinalIgnoreCase))
-            {
-                ModelState.AddModelError(nameof(model.ClientSecret), T["The client secret is required for confidential applications."]);
-            }
-
-            if (!model.AllowAuthorizationCodeFlow && !model.AllowClientCredentialsFlow &&
-                !model.AllowImplicitFlow && !model.AllowPasswordFlow && !model.AllowRefreshTokenFlow)
-            {
-                ModelState.AddModelError(string.Empty, "At least one flow must be enabled.");
-            }
-
-            IOpenIdApplication application = null;
 
             if (ModelState.IsValid)
             {
-                application = await _applicationManager.FindByPhysicalIdAsync(model.Id);
-                if (application == null)
-                {
-                    return NotFound();
-                }
-
-                if (!model.UpdateClientSecret && await _applicationManager.IsPublicAsync(application) &&
-                    string.Equals(model.Type, OpenIddictConstants.ClientTypes.Confidential, StringComparison.OrdinalIgnoreCase))
-                {
-                    ModelState.AddModelError(nameof(model.UpdateClientSecret), T["Setting a new client secret is required"]);
-                }
-
                 var other = await _applicationManager.FindByClientIdAsync(model.ClientId);
                 if (other != null && !string.Equals(
                     await _applicationManager.GetIdAsync(other),
                     await _applicationManager.GetIdAsync(application), StringComparison.Ordinal))
                 {
-                    ModelState.AddModelError(nameof(model.ClientId), T["The client identifier is already taken by another application."]);
+                    ModelState.AddModelError(nameof(model.ClientId), S["The client identifier is already taken by another application."]);
                 }
             }
 
@@ -330,7 +372,7 @@ namespace OrchardCore.OpenId.Controllers
             descriptor.DisplayName = model.DisplayName;
             descriptor.Type = model.Type;
 
-            if (model.UpdateClientSecret)
+            if (!string.IsNullOrEmpty(model.ClientSecret))
             {
                 descriptor.ClientSecret = model.ClientSecret;
             }
@@ -338,6 +380,15 @@ namespace OrchardCore.OpenId.Controllers
             if (string.Equals(descriptor.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
             {
                 descriptor.ClientSecret = null;
+            }
+
+            if (model.AllowLogoutEndpoint)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
+            }
+            else
+            {
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.Endpoints.Logout);
             }
 
             if (model.AllowAuthorizationCodeFlow)
@@ -404,17 +455,90 @@ namespace OrchardCore.OpenId.Controllers
                 descriptor.Permissions.Remove(OpenIddictConstants.Permissions.Endpoints.Token);
             }
 
-            descriptor.Roles.IntersectWith(model.RoleEntries
+            if (model.AllowAuthorizationCodeFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.Code);
+            }
+            else
+            {
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.Code);
+            }
+
+            if (model.AllowImplicitFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.IdToken);
+
+                if (string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
+                {
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.IdTokenToken);
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.Token);
+                }
+                else
+                {
+                    descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.IdTokenToken);
+                    descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.Token);
+                }
+            }
+            else
+            {
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.IdToken);
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.IdTokenToken);
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.Token);
+            }
+            if (model.AllowHybridFlow)
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken);
+
+                if (string.Equals(model.Type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
+                {
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeIdTokenToken);
+                    descriptor.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeToken);
+                }
+                else
+                {
+                    descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.CodeIdTokenToken);
+                    descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.CodeToken);
+                }
+            }
+            else
+            {
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken);
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.CodeIdTokenToken);
+                descriptor.Permissions.Remove(OpenIddictConstants.Permissions.ResponseTypes.CodeToken);
+            }
+
+            descriptor.Roles.Clear();
+
+            foreach (var selectedRole in (model.RoleEntries
                 .Where(role => role.Selected)
-                .Select(role => role.Name));
+                .Select(role => role.Name)))
+            {
+                descriptor.Roles.Add(selectedRole);
+            }
 
-            descriptor.PostLogoutRedirectUris.IntersectWith(
-                from uri in model.PostLogoutRedirectUris?.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
-                select new Uri(uri, UriKind.Absolute));
+            descriptor.Permissions.RemoveWhere(permission => permission.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope));
+            foreach (var selectedScope in (model.ScopeEntries
+                .Where(scope => scope.Selected)
+                .Select(scope => scope.Name)))
+            {
+                descriptor.Permissions.Add(OpenIddictConstants.Permissions.Prefixes.Scope + selectedScope);
+            }
 
-            descriptor.RedirectUris.IntersectWith(
-                from uri in model.RedirectUris?.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
-                select new Uri(uri, UriKind.Absolute));
+            descriptor.PostLogoutRedirectUris.Clear();
+            foreach (Uri uri in
+                (from uri in model.PostLogoutRedirectUris?.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
+                 select new Uri(uri, UriKind.Absolute)))
+            {
+                descriptor.PostLogoutRedirectUris.Add(uri);
+            }
+
+            descriptor.RedirectUris.Clear();
+            foreach (Uri uri in
+               (from uri in model.RedirectUris?.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>()
+                select new Uri(uri, UriKind.Absolute)))
+            {
+                descriptor.RedirectUris.Add(uri);
+            }
 
             await _applicationManager.UpdateAsync(application, descriptor);
 
@@ -431,7 +555,7 @@ namespace OrchardCore.OpenId.Controllers
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageApplications))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var application = await _applicationManager.FindByPhysicalIdAsync(id);

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Setup.Events;
 
 namespace OrchardCore.Settings.Services
@@ -10,16 +9,17 @@ namespace OrchardCore.Settings.Services
     /// </summary>
     public class SetupEventHandler : ISetupEventHandler
     {
-        private readonly ISiteService _setupService;
+        private readonly ISiteService _siteService;
 
-        public SetupEventHandler(ISiteService setupService)
+        public SetupEventHandler(ISiteService siteService)
         {
-            _setupService = setupService;
+            _siteService = siteService;
         }
 
         public async Task Setup(
             string siteName,
             string userName,
+            string userId,
             string email,
             string password,
             string dbProvider,
@@ -30,11 +30,11 @@ namespace OrchardCore.Settings.Services
             )
         {
             // Updating site settings
-            var siteSettings = await _setupService.GetSiteSettingsAsync();
+            var siteSettings = await _siteService.LoadSiteSettingsAsync();
             siteSettings.SiteName = siteName;
-            siteSettings.SuperUser = userName;
+            siteSettings.SuperUser = userId;
             siteSettings.TimeZoneId = siteTimeZone;
-            await _setupService.UpdateSiteSettingsAsync(siteSettings);
+            await _siteService.UpdateSiteSettingsAsync(siteSettings);
 
             // TODO: Add Encryption Settings in
         }

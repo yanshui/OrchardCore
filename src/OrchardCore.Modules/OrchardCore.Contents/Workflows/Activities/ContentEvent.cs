@@ -15,8 +15,6 @@ namespace OrchardCore.Contents.Workflows.Activities
         {
         }
 
-        public override bool CanStartWorkflow => true;
-
         public IList<string> ContentTypeFilter
         {
             get => GetProperty<IList<string>>(defaultValue: () => new List<string>());
@@ -37,7 +35,6 @@ namespace OrchardCore.Contents.Workflows.Activities
             // "" means 'any'.
             return !contentTypes.Any() || contentTypes.Any(contentType => content.ContentItem.ContentType == contentType);
         }
-
 
         public override ActivityExecutionResult Execute(WorkflowExecutionContext workflowContext, ActivityContext activityContext)
         {

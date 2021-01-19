@@ -1,20 +1,18 @@
-﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
-using Newtonsoft.Json;
 using OrchardCore.Admin;
 using OrchardCore.Deployment.Core.Services;
-using OrchardCore.Deployment.Remote.Models;
 using OrchardCore.Deployment.Remote.Services;
+using OrchardCore.Deployment.Remote.ViewModels;
 using OrchardCore.Deployment.Services;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Mvc.Utilities;
+using OrchardCore.Recipes.Models;
 using YesSql;
 
 namespace OrchardCore.Deployment.Remote.Controllers
@@ -22,11 +20,14 @@ namespace OrchardCore.Deployment.Remote.Controllers
     [Admin]
     public class ExportRemoteInstanceController : Controller
     {
+        private static readonly HttpClient _httpClient = new HttpClient();
+
         private readonly IDeploymentManager _deploymentManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly ISession _session;
         private readonly RemoteInstanceService _service;
         private readonly INotifier _notifier;
+        private readonly IHtmlLocalizer H;
 
         public ExportRemoteInstanceController(
             IAuthorizationService authorizationService,
@@ -34,24 +35,22 @@ namespace OrchardCore.Deployment.Remote.Controllers
             RemoteInstanceService service,
             IDeploymentManager deploymentManager,
             INotifier notifier,
-            IHtmlLocalizer<ExportRemoteInstanceController> h)
+            IHtmlLocalizer<ExportRemoteInstanceController> localizer)
         {
             _authorizationService = authorizationService;
             _deploymentManager = deploymentManager;
             _session = session;
             _service = service;
             _notifier = notifier;
-            H = h;
+            H = localizer;
         }
 
-        public IHtmlLocalizer H { get; }
-
         [HttpPost]
-        public async Task<IActionResult> Execute(int id, string remoteInstanceId)
+        public async Task<IActionResult> Execute(int id, string remoteInstanceId, string returnUrl)
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.Export))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var deploymentPlan = await _session.GetAsync<DeploymentPlan>(id);
@@ -73,9 +72,9 @@ namespace OrchardCore.Deployment.Remote.Controllers
 
             using (var fileBuilder = new TemporaryFileBuilder())
             {
-                archiveFileName = Path.Combine(Path.GetTempPath(), filename);
+                archiveFileName = PathExtensions.Combine(Path.GetTempPath(), filename);
 
-                var deploymentPlanResult = new DeploymentPlanResult(fileBuilder);
+                var deploymentPlanResult = new DeploymentPlanResult(fileBuilder, new RecipeDescriptor());
                 await _deploymentManager.ExecuteDeploymentPlanAsync(deploymentPlan, deploymentPlanResult);
 
                 if (System.IO.File.Exists(archiveFileName))
@@ -90,16 +89,17 @@ namespace OrchardCore.Deployment.Remote.Controllers
 
             try
             {
-                var archiveContainer = new ArchiveContainer();
-                archiveContainer.ClientName = remoteInstance.ClientName;
-                archiveContainer.ApiKey = remoteInstance.ApiKey;
-                archiveContainer.ArchiveBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(archiveFileName));
-
-                using (var httpClient = new HttpClient())
+                using (var requestContent = new MultipartFormDataContent())
                 {
-                    var content = new StringContent(JsonConvert.SerializeObject(archiveContainer));
-                    content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
-                    response = await httpClient.PostAsync(remoteInstance.Url, content);
+                    requestContent.Add(new StreamContent(
+                        new FileStream(archiveFileName,
+                        FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 1, FileOptions.Asynchronous | FileOptions.SequentialScan)
+                    ),
+                        nameof(ImportViewModel.Content), Path.GetFileName(archiveFileName));
+                    requestContent.Add(new StringContent(remoteInstance.ClientName), nameof(ImportViewModel.ClientName));
+                    requestContent.Add(new StringContent(remoteInstance.ApiKey), nameof(ImportViewModel.ApiKey));
+
+                    response = await _httpClient.PostAsync(remoteInstance.Url, requestContent);
                 }
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -108,12 +108,17 @@ namespace OrchardCore.Deployment.Remote.Controllers
                 }
                 else
                 {
-                    _notifier.Error(H["An error occured while sending the deployment to the remote instance: \"{0} ({1})\"", response.ReasonPhrase, (int)response.StatusCode]);
+                    _notifier.Error(H["An error occurred while sending the deployment to the remote instance: \"{0} ({1})\"", response.ReasonPhrase, (int)response.StatusCode]);
                 }
             }
             finally
             {
                 System.IO.File.Delete(archiveFileName);
+            }
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
             }
 
             return RedirectToAction("Display", "DeploymentPlan", new { area = "OrchardCore.Deployment", id });

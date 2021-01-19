@@ -1,8 +1,5 @@
-﻿using OrchardCore.Environment.Commands.Parameters;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using OrchardCore.Environment.Commands.Parameters;
 using Xunit;
 
 namespace OrchardCore.Tests.Hosting.Console
@@ -185,7 +182,7 @@ namespace OrchardCore.Tests.Hosting.Console
             // => <empty arg>
             var result = new CommandParser().Parse("\"").ToList();
             Assert.NotNull(result);
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("", result[0]);
         }
         [Fact]
@@ -195,7 +192,7 @@ namespace OrchardCore.Tests.Hosting.Console
             // => <empty arg>
             var result = new CommandParser().Parse("\"\"").ToList();
             Assert.NotNull(result);
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("", result[0]);
         }
     }

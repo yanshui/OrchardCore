@@ -4,33 +4,25 @@ using Esprima;
 using Jint;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Localization;
 
 namespace OrchardCore.Scripting.JavaScript
 {
     public class JavaScriptEngine : IScriptingEngine
     {
-		private readonly IMemoryCache _memoryCache;
+        private readonly IMemoryCache _memoryCache;
 
-		public JavaScriptEngine(
-			IMemoryCache memoryCache,
-			IStringLocalizer<JavaScriptEngine> localizer)
+        public JavaScriptEngine(IMemoryCache memoryCache)
         {
-			_memoryCache = memoryCache;
-            S = localizer;
+            _memoryCache = memoryCache;
         }
-
-        IStringLocalizer S { get; }
-
-        public LocalizedString Name => S["JavaScript"];
 
         public string Prefix => "js";
 
         public IScriptingScope CreateScope(IEnumerable<GlobalMethod> methods, IServiceProvider serviceProvider, IFileProvider fileProvider, string basePath)
         {
             var engine = new Engine();
-            
-            foreach(var method in methods)
+
+            foreach (var method in methods)
             {
                 engine.SetValue(method.Name, method.Method(serviceProvider));
             }
@@ -52,20 +44,20 @@ namespace OrchardCore.Scripting.JavaScript
                 throw new ArgumentException($"Expected a scope of type {nameof(JavaScriptScope)}", nameof(scope));
             }
 
-			var parsedAst = _memoryCache.GetOrCreate(script, entry =>
-			{
-				var parser = new JavaScriptParser(script);
-				return parser.ParseProgram();
-			});
+            var parsedAst = _memoryCache.GetOrCreate(script, entry =>
+            {
+                var parser = new JavaScriptParser(script);
+                return parser.ParseScript();
+            });
 
-			var result = jsScope.Engine.Execute(parsedAst).GetCompletionValue()?.ToObject();
+            var result = jsScope.Engine.Execute(parsedAst).GetCompletionValue()?.ToObject();
 
             return result;
         }
     }
 
     public class MethodProxy
-    {        
+    {
         public IList<object> Arguments { get; set; }
         public Func<IServiceProvider, IList<object>, object> Callback { get; set; }
         public object Invoke()

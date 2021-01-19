@@ -2,9 +2,9 @@ using OrchardCore.Modules.Manifest;
 
 [assembly: Module(
     Name = "Workflows",
-    Author = "The Orchard Team",
-    Website = "http://orchardproject.net",
-    Version = "2.0.0",
+    Author = ManifestConstants.OrchardCoreTeam,
+    Website = ManifestConstants.OrchardCoreWebsite,
+    Version = ManifestConstants.OrchardCoreVersion,
     Description = "The Workflows module provides tools and APIs to create custom workflows",
     Category = "Workflows"
 )]
@@ -13,7 +13,7 @@ using OrchardCore.Modules.Manifest;
     Id = "OrchardCore.Workflows",
     Name = "Workflows",
     Description = "The Workflows module provides tools and APIs to create custom workflows",
-    Dependencies = new[] { "OrchardCore.Liquid", "OrchardCore.Scripting", "OrchardCore.DataProtection" },
+    Dependencies = new[] { "OrchardCore.Liquid", "OrchardCore.Scripting" },
     Category = "Workflows"
 )]
 

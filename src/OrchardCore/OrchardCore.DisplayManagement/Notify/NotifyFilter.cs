@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OrchardCore.DisplayManagement.Layout;
@@ -20,14 +21,13 @@ namespace OrchardCore.DisplayManagement.Notify
         private readonly INotifier _notifier;
         private readonly dynamic _shapeFactory;
         private readonly ILayoutAccessor _layoutAccessor;
-        private readonly ShellSettings _shellSettings;
         private readonly IDataProtectionProvider _dataProtectionProvider;
 
         private NotifyEntry[] _existingEntries = Array.Empty<NotifyEntry>();
         private bool _shouldDeleteCookie;
         private string _tenantPath;
         private readonly HtmlEncoder _htmlEncoder;
-        private readonly ILogger<NotifyFilter> _logger;
+        private readonly ILogger _logger;
 
         public NotifyFilter(
             INotifier notifier,
@@ -41,13 +41,12 @@ namespace OrchardCore.DisplayManagement.Notify
             _htmlEncoder = htmlEncoder;
             _logger = logger;
             _dataProtectionProvider = dataProtectionProvider;
-            _shellSettings = shellSettings;
 
             _layoutAccessor = layoutAccessor;
             _notifier = notifier;
             _shapeFactory = shapeFactory;
 
-            _tenantPath = "/" + _shellSettings.RequestUrlPrefix;
+            _tenantPath = "/" + shellSettings.RequestUrlPrefix;
         }
 
         public void OnActionExecuting(ActionExecutingContext filterContext)
@@ -62,7 +61,7 @@ namespace OrchardCore.DisplayManagement.Notify
 
             if (messageEntries == null)
             {
-                // An error occured during deserialization
+                // An error occurred during deserialization
                 _shouldDeleteCookie = true;
                 return;
             }
@@ -89,11 +88,11 @@ namespace OrchardCore.DisplayManagement.Notify
             // Assign values to the Items collection instead of TempData and
             // combine any existing entries added by the previous request with new ones.
 
-            _existingEntries = messageEntries.Concat(_existingEntries).ToArray();
+            _existingEntries = messageEntries.Concat(_existingEntries).Distinct(new NotifyEntryComparer(_htmlEncoder)).ToArray();
 
             // Result is not a view, so assume a redirect and assign values to TemData.
             // String data type used instead of complex array to be session-friendly.
-            if (!(filterContext.Result is ViewResult) && _existingEntries.Length > 0)
+            if (!(filterContext.Result is ViewResult || filterContext.Result is PageResult) && _existingEntries.Length > 0)
             {
                 filterContext.HttpContext.Response.Cookies.Append(CookiePrefix, SerializeNotifyEntry(_existingEntries), new CookieOptions { HttpOnly = true, Path = _tenantPath });
             }
@@ -109,7 +108,7 @@ namespace OrchardCore.DisplayManagement.Notify
                 return;
             }
 
-            if (!(filterContext.Result is ViewResult))
+            if (!(filterContext.Result is ViewResult || filterContext.Result is PageResult))
             {
                 await next();
                 return;
@@ -133,18 +132,10 @@ namespace OrchardCore.DisplayManagement.Notify
 
             await next();
         }
-        
+
         private void DeleteCookies(ResultExecutingContext filterContext)
         {
             filterContext.HttpContext.Response.Cookies.Delete(CookiePrefix, new CookieOptions { Path = _tenantPath });
-        }
-
-        private IDataProtector CreateTenantProtector()
-        {
-            // Note: this filter is not located in a module that depends on the DataProtection module.
-            // As such, we can't guarantee the key ring is not shared between tenants. To ensure cookies
-            // encrypted by this tenant can't be read by another one, a sub-protector is always created.
-            return _dataProtectionProvider.CreateProtector(nameof(NotifyFilter), _shellSettings.Name);
         }
 
         private string SerializeNotifyEntry(NotifyEntry[] notifyEntries)
@@ -154,7 +145,7 @@ namespace OrchardCore.DisplayManagement.Notify
 
             try
             {
-                var protector = CreateTenantProtector();
+                var protector = _dataProtectionProvider.CreateProtector(nameof(NotifyFilter));
                 var signed = protector.Protect(JsonConvert.SerializeObject(notifyEntries, settings));
                 return WebUtility.UrlEncode(signed);
             }
@@ -171,7 +162,7 @@ namespace OrchardCore.DisplayManagement.Notify
 
             try
             {
-                var protector = CreateTenantProtector();
+                var protector = _dataProtectionProvider.CreateProtector(nameof(NotifyFilter));
                 var decoded = protector.Unprotect(WebUtility.UrlDecode(value));
                 messageEntries = JsonConvert.DeserializeObject<NotifyEntry[]>(decoded, settings);
             }

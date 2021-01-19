@@ -1,38 +1,59 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Logging;
 using OrchardCore.DisplayManagement.Handlers;
+using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.DisplayManagement.Views;
+using OrchardCore.Modules;
 using OrchardCore.Security.Services;
+using OrchardCore.Users.Handlers;
 using OrchardCore.Users.Models;
-using OrchardCore.Users.Services;
 using OrchardCore.Users.ViewModels;
 
 namespace OrchardCore.Users.Drivers
 {
     public class UserDisplayDriver : DisplayDriver<User>
     {
+        private const string AdministratorRole = "Administrator";
         private readonly UserManager<IUser> _userManager;
-        private readonly IUserService _userService;
-        private readonly IRoleProvider _roleProvider;
-
-        private readonly IStringLocalizer T;
+        private readonly IRoleService _roleService;
+        private readonly IUserRoleStore<IUser> _userRoleStore;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly INotifier _notifier;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly ILogger _logger;
+        private readonly IHtmlLocalizer H;
 
         public UserDisplayDriver(
             UserManager<IUser> userManager,
-            IUserService userService,
-            IRoleProvider roleProvider,
-            IStringLocalizer<UserDisplayDriver> stringLocalizer)
+            IRoleService roleService,
+            IUserRoleStore<IUser> userRoleStore,
+            IHttpContextAccessor httpContextAccessor,
+            INotifier notifier,
+            ILogger<UserDisplayDriver> logger,
+            IEnumerable<IUserEventHandler> handlers,
+            IAuthorizationService authorizationService,
+            IHtmlLocalizer<UserDisplayDriver> htmlLocalizer)
         {
             _userManager = userManager;
-            _userService = userService;
-            _roleProvider = roleProvider;
-
-            T = stringLocalizer;
+            _roleService = roleService;
+            _userRoleStore = userRoleStore;
+            _httpContextAccessor = httpContextAccessor;
+            _notifier = notifier;
+            _authorizationService = authorizationService;
+            _logger = logger;
+            Handlers = handlers;
+            H = htmlLocalizer;
         }
+
+        public IEnumerable<IUserEventHandler> Handlers { get; private set; }
 
         public override IDisplayResult Display(User user)
         {
@@ -42,80 +63,95 @@ namespace OrchardCore.Users.Drivers
             );
         }
 
-        public override IDisplayResult Edit(User user)
+        public override Task<IDisplayResult> EditAsync(User user, BuildEditorContext context)
         {
-            return Initialize<EditUserViewModel>("UserFields_Edit", async model =>
+            return Task.FromResult<IDisplayResult>(Initialize<EditUserViewModel>("UserFields_Edit", async model =>
             {
                 var roleNames = await GetRoleNamesAsync();
                 var userRoleNames = await _userManager.GetRolesAsync(user);
                 var roles = roleNames.Select(x => new RoleViewModel { Role = x, IsSelected = userRoleNames.Contains(x, StringComparer.OrdinalIgnoreCase) }).ToArray();
 
-                model.Id = await _userManager.GetUserIdAsync(user);
-                model.UserName = await _userManager.GetUserNameAsync(user);
-                model.Email = await _userManager.GetEmailAsync(user);
                 model.Roles = roles;
-                model.DisplayPasswordFields = await IsNewUser(model.Id);
-            }).Location("Content:1");
+                model.EmailConfirmed = user.EmailConfirmed;
+                model.IsEnabled = user.IsEnabled;
+            })
+            .Location("Content:1.5")
+            .RenderWhen(() => _authorizationService.AuthorizeAsync(_httpContextAccessor.HttpContext.User, Permissions.ManageUsers)));
         }
 
         public override async Task<IDisplayResult> UpdateAsync(User user, UpdateEditorContext context)
         {
+            if (!await _authorizationService.AuthorizeAsync(_httpContextAccessor.HttpContext.User, Permissions.ManageUsers))
+            {
+                // When the user is only editing their profile never update this part of the user.
+                return await EditAsync(user, context);
+            }
+
             var model = new EditUserViewModel();
+            var httpContext = _httpContextAccessor.HttpContext;
 
             if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
             {
-                return Edit(user);
+                return await EditAsync(user, context);
             }
 
-            model.UserName = model.UserName?.Trim();
-            model.Email = model.Email?.Trim();
-
-            if (await IsNewUser(model.Id))
+            var usersOfAdminRole = await _userManager.GetUsersInRoleAsync(AdministratorRole);
+            if (!model.IsEnabled && user.IsEnabled)
             {
-                if (model.Password != model.PasswordConfirmation)
+                if (usersOfAdminRole.Count == 1 && usersOfAdminRole.First().UserName == user.UserName)
                 {
-                    context.Updater.ModelState.AddModelError(nameof(model.PasswordConfirmation), T["Password and Password Confirmation do not match"]);
+                    _notifier.Warning(H["Cannot disable the only administrator."]);
                 }
-
-                if (!context.Updater.ModelState.IsValid)
+                else
                 {
-                    return Edit(user);
+                    if (user.UserName != httpContext.User.Identity.Name)
+                    {
+                        user.IsEnabled = model.IsEnabled;
+                        var userContext = new UserContext(user);
+                        // TODO This handler should be invoked through the create or update methods.
+                        // otherwise it will not be invoked when a workflow changes this value.
+                        // or other operation.
+                        await Handlers.InvokeAsync((handler, context) => handler.DisabledAsync(userContext), userContext, _logger);
+                    }
+                    else
+                    {
+                        _notifier.Warning(H["Cannot disable current user."]);
+                    }
                 }
-
-                var roleNames = model.Roles.Where(x => x.IsSelected).Select(x => x.Role).ToArray();
-                await _userService.CreateUserAsync(model.UserName, model.Email, roleNames, model.Password, (key, message) => context.Updater.ModelState.AddModelError(key, message));
             }
-            else
+            else if (model.IsEnabled && !user.IsEnabled)
             {
-                var userWithSameName = await _userManager.FindByNameAsync(model.UserName);
-                if (userWithSameName != null)
+                user.IsEnabled = model.IsEnabled;
+                var userContext = new UserContext(user);
+                // TODO This handler should be invoked through the or update methods.
+                // otherwise it will not be invoked when a workflow changes this value.
+                // or other operation.
+                await Handlers.InvokeAsync((handler, context) => handler.EnabledAsync(userContext), userContext, _logger);
+            }
+
+            if (context.Updater.ModelState.IsValid)
+            {
+                if (model.EmailConfirmed)
                 {
-                    var userWithSameNameId = await _userManager.GetUserIdAsync(userWithSameName);
-                    if (userWithSameNameId != model.Id)
-                    {
-                        context.Updater.ModelState.AddModelError(string.Empty, T["The user name is already used."]);
-                    }
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    await _userManager.ConfirmEmailAsync(user, token);
                 }
 
-                var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
-                if (userWithSameEmail != null)
+                var roleNames = model.Roles.Where(x => x.IsSelected).Select(x => x.Role).ToList();
+
+                if (context.IsNew)
                 {
-                    var userWithSameEmailId = await _userManager.GetUserIdAsync(userWithSameEmail);
-                    if (userWithSameEmailId != model.Id)
+                    // Add new roles
+                    foreach (var role in roleNames)
                     {
-                        context.Updater.ModelState.AddModelError(string.Empty, T["The email is already used."]);
+                        await _userRoleStore.AddToRoleAsync(user, _userManager.NormalizeName(role), default(CancellationToken));
                     }
                 }
-
-                if (context.Updater.ModelState.IsValid)
+                else
                 {
-                    var roleNames = model.Roles.Where(x => x.IsSelected).Select(x => x.Role).ToList();
-                    await _userManager.SetUserNameAsync(user, model.UserName);
-                    await _userManager.SetEmailAsync(user, model.Email);
-
                     // Remove roles in two steps to prevent an iteration on a modified collection
                     var rolesToRemove = new List<string>();
-                    foreach (var role in await _userManager.GetRolesAsync(user))
+                    foreach (var role in await _userRoleStore.GetRolesAsync(user, default(CancellationToken)))
                     {
                         if (!roleNames.Contains(role))
                         {
@@ -125,39 +161,36 @@ namespace OrchardCore.Users.Drivers
 
                     foreach (var role in rolesToRemove)
                     {
-                        await _userManager.RemoveFromRoleAsync(user, role);
+                        // Make sure we always have at least one administrator account
+                        if (usersOfAdminRole.Count == 1 && usersOfAdminRole.First().UserName == user.UserName && role == AdministratorRole)
+                        {
+                            _notifier.Warning(H["Cannot remove administrator role from the only administrator."]);
+                            continue;
+                        }
+                        else
+                        {
+                            await _userRoleStore.RemoveFromRoleAsync(user, _userManager.NormalizeName(role), default(CancellationToken));
+                        }
                     }
 
                     // Add new roles
                     foreach (var role in roleNames)
                     {
-                        if (!await _userManager.IsInRoleAsync(user, role))
+                        if (!await _userRoleStore.IsInRoleAsync(user, _userManager.NormalizeName(role), default(CancellationToken)))
                         {
-                            await _userManager.AddToRoleAsync(user, role);
+                            await _userRoleStore.AddToRoleAsync(user, _userManager.NormalizeName(role), default(CancellationToken));
                         }
-                    }
-
-                    var result = await _userManager.UpdateAsync(user);
-                    
-                    foreach (var error in result.Errors)
-                    {
-                        context.Updater.ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
             }
 
-            return Edit(user);
+            return await EditAsync(user, context);
         }
 
         private async Task<IEnumerable<string>> GetRoleNamesAsync()
         {
-            var roleNames = await _roleProvider.GetRoleNamesAsync();
+            var roleNames = await _roleService.GetRoleNamesAsync();
             return roleNames.Except(new[] { "Anonymous", "Authenticated" }, StringComparer.OrdinalIgnoreCase);
-        }
-
-        private async Task<bool> IsNewUser(string userId)
-        {
-            return await _userManager.FindByIdAsync(userId) == null;
         }
     }
 }
